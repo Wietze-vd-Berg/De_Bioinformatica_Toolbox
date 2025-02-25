@@ -4,7 +4,8 @@ version 1.0, Date: 2/25/2025
 Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en Marit van Nuil
 
 
-Description:.
+Description: This web-based tool allows users to analyze gene expression differences in RNA samples using Salmon, a wicked-fast and accurate RNA-seq
+quantification tool. The program is designed to help the user compare gene expression levels between two RNA samples.
 
 Installation:
 

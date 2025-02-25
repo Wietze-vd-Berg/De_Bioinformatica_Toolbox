@@ -13,3 +13,5 @@ Groepsrepo voor De bioinformatica toolbox
 8. referenties
 
 (zie blackboard voor meer info)
+
+### Opdracht toolbox Salmon

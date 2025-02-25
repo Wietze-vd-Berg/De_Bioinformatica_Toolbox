@@ -14,8 +14,8 @@ Groepsrepo voor De bioinformatica toolbox
 
 (zie blackboard voor meer info)
 
-### Opdracht toolbox Salmon
-versie 1, X-3-2025
+### Assignment 2025 toolbox Salmon
+version 1.0, X-3-2025
 
 
 Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en Marit van Nuil

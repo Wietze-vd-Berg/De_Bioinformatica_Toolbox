@@ -80,6 +80,7 @@ Here you can mention/thank anyone who helped you out while making this project.
 If you make something for an institute/company you can also mention them here.
 
 Refrences:
+
 Combine Lab. (2025, februari 16). Salmon: About. https://combine-lab.github.io/salmon/about/  
 
 COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://github.com/COMBINE-lab/salmon 

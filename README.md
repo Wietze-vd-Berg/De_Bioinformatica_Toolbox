@@ -73,8 +73,7 @@ Any and all instructions on how to use this package go here. Possibly also some 
 how to interpret the output.
 
 Support:
-If users run into trouble/find a bug, who do they contact?
-(Generally, you just want to put your own email adress here)
+If you run into a bug or an error, send a mail to nicolebovenga004@gmail.com
 
 References:
 

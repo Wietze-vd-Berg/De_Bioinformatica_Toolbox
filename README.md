@@ -12,4 +12,4 @@ Groepsrepo voor De bioinformatica toolbox
 7. support
 8. referenties
 
-(zie blackboard)
+(zie blackboard voor meer info)

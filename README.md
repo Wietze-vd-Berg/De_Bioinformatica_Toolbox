@@ -1,20 +1,4 @@
-# De_Bioinformatica_Toolbox
-Groepsrepo voor De bioinformatica toolbox
-
-### REQUIREMENTS/VOLGORDE README
-
-1. Titel
-2. versie+datum
-3. omschrijving
-4. systeem requirements
-5. instalatie
-6. cmd line voorbeelden
-7. support
-8. referenties
-
-(zie blackboard voor meer info)
-
-### Assignment 2025 toolbox Salmon
+# Bioinformatica_Toolbox_Salmon
 version 1.0, X-3-2025
 
 
@@ -102,3 +86,16 @@ If users run into trouble/find a bug, who do they contact?
 Acknowledgment:
 Here you can mention/thank anyone who helped you out while making this project.
 If you make something for an institute/company you can also mention them here.
+
+### REQUIREMENTS/VOLGORDE README
+
+1. Titel
+2. versie+datum
+3. omschrijving
+4. systeem requirements
+5. instalatie
+6. cmd line voorbeelden
+7. support
+8. referenties
+
+(zie blackboard voor meer info)

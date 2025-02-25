@@ -9,9 +9,9 @@ Version: 1.0
 Name: Opdracht_Toolbox_Salmon
 
 Description:
-Quickly describe what your program does and what it could be used for.
-If your package is large and contains many submodules, you may need to describe the
-individual scripts here.
+With Salmon we want to develop an efficient and fast way to analyze gene expression differences in RNA samples. 
+As a final result, we will create a website in which users can enter RNA samples and then view Salmon's gene expression analyses, 
+including visualizations of the differences, in the form of a heat map.
 
 
 Installation:

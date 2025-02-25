@@ -68,17 +68,13 @@ To activate and deactivate this environment, use the following commands:
 2. conda deactivate
 
 
-Usage:
+Examples:
 Any and all instructions on how to use this package go here. Possibly also some explanation on
 how to interpret the output.
 
 Support:
 If users run into trouble/find a bug, who do they contact?
 (Generally, you just want to put your own email adress here)
-
-Acknowledgment:
-Here you can mention/thank anyone who helped you out while making this project.
-If you make something for an institute/company you can also mention them here.
 
 References:
 

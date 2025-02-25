@@ -1,12 +1,8 @@
 # Bioinformatica_Toolbox_Salmon
-version 1.0, X-3-2025
-
+version 1.0, Date: 2/25/2025
 
 Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en Marit van Nuil
-Date: 2/25/2025
-Version: 1.0
 
-Name: Opdracht_Toolbox_Salmon
 
 Description:.
 

@@ -8,11 +8,7 @@ Version: 1.0
 
 Name: Opdracht_Toolbox_Salmon
 
-Description:
-With Salmon we want to develop an efficient and fast way to analyze gene expression differences in RNA samples. 
-As a final result, we will create a website in which users can enter RNA samples and then view Salmon's gene expression analyses, 
-including visualizations of the differences, in the form of a heat map.
-
+Description:.
 
 Installation:
 

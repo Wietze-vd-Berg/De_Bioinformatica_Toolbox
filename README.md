@@ -1,6 +1,6 @@
 # Bioinformatica_Toolbox_Salmon
 version 2.0, Date: 2/25/2025
- 
+
 Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en Marit van Nuil
  
  
@@ -96,7 +96,7 @@ Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/
 3. omschrijving
 4. systeem requirements
 5. instalatie
-6. cmd line voorbeelden
+6. commandline voorbeelden
 7. support
 8. referenties
  

@@ -89,7 +89,3 @@ COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://gi
  
 Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/en/latest/salmon.html 
  
-
-8. referenties
- 
-(zie blackboard voor meer info)

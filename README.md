@@ -8,11 +8,13 @@ Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en
 This web-based tool allows users to analyze gene expression differences in RNA samples using Salmon, a wicked-fast and accurate RNA-seq
 quantification tool. The program is designed to help the user compare gene expression levels between two RNA samples.
 
-## Requierments
-Machine with python 2.7 or higher.
+## Requirements
+Machine with python 2.7 or higher. <br>
+This guide is for Linux operating systems.
 
 ## Installation
 ### Part 1: Miniconda
+This step can be skipped if you've already installed mini/ana-conda
 ```
 First, Miniconda needs to be installed.
 You can also install the full Conda, but since we only need Bioconda, it’s unnecessary because the full Conda is quite large.
@@ -49,6 +51,7 @@ The download of Miniconda will now begin.
 yes (this will automatically start Conda when you open the terminal)
 ```
 ### Part 2: Bioconda
+This step can be skipped if anaconda is already installed
  
 ```
 Fortunately, we’ve now gotten through the most annoying part.

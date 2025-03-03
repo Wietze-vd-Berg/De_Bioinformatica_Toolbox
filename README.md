@@ -74,9 +74,6 @@ To activate and deactivate this environment, use the following commands:
 2. conda deactivate
 ```
  
-## Examples
-Any and all instructions on how to use this package go here. Possibly also some explanation on
-how to interpret the output.
  
 ## Support
 If you run into a bug or an error, send a mail to nicolebovenga004@gmail.com

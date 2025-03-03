@@ -89,15 +89,7 @@ COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://gi
  
 Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/en/latest/salmon.html 
  
-### REQUIREMENTS/VOLGORDE README
- 
-1. Titel
-2. versie+datum
-3. omschrijving
-4. systeem requirements
-5. instalatie
-6. commandline voorbeelden
-7. support
+
 8. referenties
  
 (zie blackboard voor meer info)

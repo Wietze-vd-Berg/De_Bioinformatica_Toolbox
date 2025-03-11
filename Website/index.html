@@ -13,15 +13,28 @@
     <a href="uitleg.html">Uitleg</a>
     <a href="contact.html">Contact</a>
     </div>
-<pre>
-    Via deze website kan u op een gebruiksvriendelijke en efficiënte manier RNA-seq data analyseren
-    met behulp van Salmon, een krachtige tool voor het kwantificeren van de genexpressie.
+    <h1>RNA-analyse met Salmon</h1>
+    <p>
+        RNA-sequencing is een techniek waarmee de hoeveelheid RNA in een monster wordt gemeten.</br>
+    Deze website dient als een efficiënte manier om RNA-seq data analyseren met behulp van Salmon,</br>
+    een krachtige tool voor het kwantificeren van de genexpressie, het tot uitdrukking brengen van bepaalde genen. [<a href="https://www.nature.com/articles/nrg2484">RNA-Seq: a revolutionary tool for transcriptomics</a>]
+    </p>
 
-Waarom Salmon?
-    Salmon is een snelle en nauwkeurige tool voor RNA-seq data-analyse. Het maakt gebruik van probabilistische
-    modellen en statistische correcties om RNA-seq data snel en accuraat te verwerken.
-    Hierdoor is het een efficiënte keuze voor genexpressie-analyse.
-    Het kan direct werken met verschillende bestandsformaten zoals FASTA, FASTQ, SAM of BAM.
+    <p>
+    Salmon is een transcriptkwantificatie-tool, wat betekent dat het berekent hoeveel van elk RNA-transcript aanwezig is. [<a href="https://combine-lab.github.io/salmon/">Salmon website</a>]</br>
+    Een transcript is een afgeschreven kopie van een gen, die later kan worden vertaald naar een eiwit.</br>
+    Salmon gebruikt een probabilistisch model, wat inhoudt dat het wiskundige waarschijnlijkheden gebruikt om meetfouten te corrigeren.
+    </p>
+
+    <p>
+    Een groot voordeel van Salmon is pseudo-uitlijning.</br>
+    Bij traditionele methoden worden RNA-sequenties volledig uitgelijnd tegen een referentiegenoom, wat veel rekenkracht kost. [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0881-8">A survey of best practices for RNA-seq data analysis</a>]</br>
+    Pseudo-uitlijning daarentegen bepaalt snel of een RNA-fragment overeenkomt met bekende genen zonder de exacte positie te bepalen. [<a href="https://www.nature.com/articles/nbt.3519">Near-optimal probabilistic RNA-seq quantification</a>]</br>
+    Dit maakt de analyse vele malen sneller en efficiënter.
+    </p>
+
+    <h1>Zelf RNA-analyse uitvoeren.</h1>
+    <a href="Salmon_invoer.html">Bezoek onze analysepagina om direct aan de slag te gaan met Salmon.</a>
     </pre>
 </body>
 </html>

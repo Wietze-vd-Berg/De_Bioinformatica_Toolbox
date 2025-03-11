@@ -5,8 +5,14 @@ Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en
  
  
 ## Description
-This web-based tool allows users to analyze gene expression differences in RNA samples using Salmon, a wicked-fast and accurate RNA-seq
-quantification tool. The program is designed to help the user compare gene expression levels between two RNA samples.
+This tool and website help users analyze differences in gene expression between two RNA samples using Salmon, a wicked-fast and accurate RNA-seq quantification tool. [[1]](https://combine-lab.github.io/salmon/about/)
+It allows the user to compare gene activity levels and understand how genes are expressed in different conditions.
+Gene expression is the process where genetic information from DNA is used to produce RNA and proteins. By measuring gene expression, you can see which genes are active.
+Salmon is a tool that quickly estimates gene expression levels from RNA-seq data. Instead of slowly aligning sequences to a genome, 
+Salmon uses smart algorithms to quickly and accurately determine how much each gene is expressed. [[2]](https://github.com/COMBINE-lab/salmon)
+
+Users upload RNA-sequencing files, and the tool processes them using Salmon to analyze gene expression.
+They can then compare the RNA samples and explore differences. The tool generates visual reports that the user can download or export. [[3]](https://salmon.readthedocs.io/en/latest/salmon.html)
 
 ## Requirements
 Machine with python 2.7 or higher. <br>
@@ -29,7 +35,7 @@ Everything between <> is a physical button you need to press!
  
 4. cd Downloads (or the other folder where Miniconda was installed)
  
-5. ls -l (check if the file is executable, if it doesn’t show -rwxr, it is not executable, follow steps 3 and 4 if needed)
+5. ls -l (check if the file is executable, if it shows -rwxr, it is executable step 6 and 7 can be skipped)
  
 6. chmod u+x <tab> (u = user, x adds the execute permission, tab for auto-complete, if tab doesn’t work, type the full name, mind the spelling!)
  
@@ -65,7 +71,7 @@ This will install Bioconda.
 ### Part 3: Salmon
  
 ```
-Now, you can finally install Salmon!
+Now, you can finally install Salmon and creat a virtual environment!
  
 1. conda create -n salmon salmon
  
@@ -83,9 +89,9 @@ If you run into a bug or an error, send a mail to nicolebovenga004@gmail.com
  
 ## References
  
-Combine Lab. (2025, februari 16). Salmon: About. https://combine-lab.github.io/salmon/about/  
+[1]Combine Lab. (2025, februari 16). Salmon: About. https://combine-lab.github.io/salmon/about/  
  
-COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://github.com/COMBINE-lab/salmon 
+[2]COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://github.com/COMBINE-lab/salmon 
  
-Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/en/latest/salmon.html 
+[3]Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/en/latest/salmon.html 
  

@@ -84,8 +84,34 @@ To activate and deactivate this environment, use the following commands:
 ```
  
 ## Examples
-Any and all instructions on how to use this package go here. Possibly also some explanation on
-how to interpret the output.
+```
+Let's try an example!
+
+download some data, here is some you can use:
+
+1. ftp://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+
+Unzip it if you used the example data or you using your own zipped file:
+
+1.5. gunzip Homo_sapiens.GRCh38.cdna.all.fa.gz
+
+You can index the transcriptoom with the following command:
+
+2. salmon index -t (name).fa -i salmon_index
+
+This created an new directory called salmon_index
+If you did that you can now quantify some data
+
+3. salmon quant -i salmon_index -l A -r (name).fa -o quant_output
+
+If you use big files this can take an bit.
+
+This created an new directory called quant_output with the output data of salmon
+You can see the top result with the following command:
+
+4. cat quant_output/quant.sf | head
+
+```
  
 ## Support
 If you run into a bug or an error, send a mail to nicolebovenga004@gmail.com

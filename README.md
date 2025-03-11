@@ -35,7 +35,7 @@ Everything between <> is a physical button you need to press!
  
 4. cd Downloads (or the other folder where Miniconda was installed)
  
-5. ls -l (check if the file is executable, if it doesn’t show -rwxr, it is not executable, follow steps 3 and 4 if needed)
+5. ls -l (check if the file is executable, if it shows -rwxr, it is executable step 6 and 7 can be skipped)
  
 6. chmod u+x <tab> (u = user, x adds the execute permission, tab for auto-complete, if tab doesn’t work, type the full name, mind the spelling!)
  
@@ -71,7 +71,7 @@ This will install Bioconda.
 ### Part 3: Salmon
  
 ```
-Now, you can finally install Salmon!
+Now, you can finally install Salmon and creat a virtual environment!
  
 1. conda create -n salmon salmon
  

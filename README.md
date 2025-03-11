@@ -5,8 +5,14 @@ Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en
  
  
 ## Description
-This web-based tool allows users to analyze gene expression differences in RNA samples using Salmon, a wicked-fast and accurate RNA-seq
-quantification tool. The program is designed to help the user compare gene expression levels between two RNA samples.
+This web-based tool helps users analyze differences in gene expression between two RNA samples using Salmon, a wicked-fast and accurate RNA-seq quantification tool. 
+It allows researchers to compare gene activity levels and understand how genes are expressed in different conditions.
+Gene expression is the process where genetic information from DNA is used to produce RNA and proteins. By measuring gene expression, you can see which genes are active.
+Salmon is a tool that quickly estimates gene expression levels from RNA-seq data. Instead of slowly aligning sequences to a genome, 
+Salmon uses smart algorithms to quickly and accurately determine how much each gene is expressed.
+
+Users upload RNA-sequencing files, and the tool processes them using Salmon to analyze gene expression.
+They can then compare the RNA samples and explore differences. The tool generates visual reports that the user can download or export.
 
 ## Requirements
 Machine with python 2.7 or higher. <br>

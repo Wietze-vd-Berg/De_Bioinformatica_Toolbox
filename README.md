@@ -5,14 +5,14 @@ Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en
  
  
 ## Description
-This tool and website help users analyze differences in gene expression between two RNA samples using Salmon, a wicked-fast and accurate RNA-seq quantification tool. 
+This tool and website help users analyze differences in gene expression between two RNA samples using Salmon, a wicked-fast and accurate RNA-seq quantification tool. [1]
 It allows the user to compare gene activity levels and understand how genes are expressed in different conditions.
 Gene expression is the process where genetic information from DNA is used to produce RNA and proteins. By measuring gene expression, you can see which genes are active.
 Salmon is a tool that quickly estimates gene expression levels from RNA-seq data. Instead of slowly aligning sequences to a genome, 
-Salmon uses smart algorithms to quickly and accurately determine how much each gene is expressed.
+Salmon uses smart algorithms to quickly and accurately determine how much each gene is expressed. [2]
 
 Users upload RNA-sequencing files, and the tool processes them using Salmon to analyze gene expression.
-They can then compare the RNA samples and explore differences. The tool generates visual reports that the user can download or export.
+They can then compare the RNA samples and explore differences. The tool generates visual reports that the user can download or export. [3]
 
 ## Requirements
 Machine with python 2.7 or higher. <br>
@@ -92,9 +92,9 @@ If you run into a bug or an error, send a mail to nicolebovenga004@gmail.com
  
 ## References
  
-Combine Lab. (2025, februari 16). Salmon: About. https://combine-lab.github.io/salmon/about/  
+[1]Combine Lab. (2025, februari 16). Salmon: About. https://combine-lab.github.io/salmon/about/  
  
-COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://github.com/COMBINE-lab/salmon 
+[2]COMBINE-lab. (2025, februari 18). Salmon [GitHub-repository]. GitHub. https://github.com/COMBINE-lab/salmon 
  
-Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/en/latest/salmon.html 
+[3]Salmon. (2025, februari 18). Salmon-documentatie. https://salmon.readthedocs.io/en/latest/salmon.html 
  

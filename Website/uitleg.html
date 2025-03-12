@@ -14,8 +14,29 @@
     <a href="contact.html">Contact</a>
     </div>
 
-<p> Salmon is een tool die helpt om te berekenen hoeveel transcripten er tot expressie komen in je RNA-seq monster.
-Dit wordt gedaan door de RNA-seq data te analyseren en de reads te koppelen aan bekende genen en transcripten
-(Combine Lab, 2025).  </p>
+<p> <h1>Wat is Salmon?</h1>
+    Salmon is een tool die wordt ingezet bij RNA-sequencing om de expressie van transcripten in een monster te bepalen.
+    Het doel ervan is om te achterhalen in welke mate elk transcript aanwezig is.
+    Salmon analyseert de korte sequentiefragmenten die voortkomen uit een experiment en koppelt deze aan een verzameling bekende genen en transcripten.
+    Dit proces heet transcriptiekwantificatie.
+    Het helpt om te begrijpen welke genen actief zijn en hoe hun activiteit verandert onder verschillende omstandigheden.
+    </br>
+    <h1>Hoe werkt Salmon?</h1>
+    Om te werken heeft Salmon een referentiebestand nodig in de vorm van een FASTA-bestand, waarin de sequenties van bekende RNA-transcripten zijn opgenomen.
+    Daarnaast gebruikt het een FASTA- of FASTQ-bestand dat de RNA-seq reads bevat.
+    Deze bestanden vormen de basis voor de analyse.
+    Wat Salmon bijzonder maakt is de flexibiliteit in de verwerking.
+    Het kan direct met ruwe reads werken zonder dat een aparte uitlijning nodig is, wat het proces efficiënter maakt.
+    Voor gebruikers die al uitlijningen hebben uitgevoerd, biedt Salmon echter ook de mogelijkheid om deze te benutten.
+    In dat geval kunnen SAM- of BAM-bestanden, die informatie bevatten over hoe de reads aansluiten op een referentie, worden ingevoerd om de verwerking te versnellen.
+    </br>
+    <h1>Wat doet onze website?</h1>
+    Onze website is ontworpen om de kracht van Salmon toegankelijk te maken voor gebruikers die genexpressieverschillen in RNA-monsters willen analyseren.
+    Het biedt een gebruiksvriendelijk platform waarop gebruikers hun RNA-monsterdata kunnen uploaden, zoals FASTA- of FASTQ-bestanden met reads.
+    Vervolgens voert de website een snelle en efficiënte analyse uit met behulp van Salmon.
+    Na de analyse krijgen gebruikers niet alleen de ruwe resultaten te zien, maar ook een visuele weergave van de genexpressieverschillen in de vorm van een heatmap.
+    Deze heatmap maakt het eenvoudig om in één oogopslag te zien hoe genexpressie varieert tussen verschillende condities of monsters.
+
+</p>
 </body>
 </html>

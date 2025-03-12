@@ -1,5 +1,5 @@
 "Snel in elkaar geflantse code, wellicht kan dit later in het project ook worden gebruikt!"
-"Bron: https://www.createwithdata.com/visualising-data-with-js-getting-started/"
+    "Bron: https://www.createwithdata.com/visualising-data-with-js-getting-started/"
 
 document.addEventListener("DOMContentLoaded", function() { //javascript functie :O
     fetch("voorbeeld_data/quant.json")
@@ -41,6 +41,5 @@ document.addEventListener("DOMContentLoaded", function() { //javascript functie 
                     }
                 }
             });
-        })
-        .catch(error => console.error("Fout bij verwerken JSON:", error));
+        }).catch(error => console.error("Fout bij verwerken JSON:", error));
 });

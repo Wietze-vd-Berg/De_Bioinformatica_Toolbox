@@ -10,10 +10,10 @@
 </head>
 <body>
     <div class="topnav"> <!-- Standaard nav wat wordt hergebruikt in de andere files -->
-    <a class="active" href="{{ url_for('index') }}">Home</a>
-    <a href="{{ url_for('salmon_invoer')}}">Salmon invoer</a>
-    <a href="{{ url_for('uitleg')}}">Uitleg</a>
-    <a href="{{ url_for('contact')}}">Contact</a>
+    <a href="{{ url_for('index') }}" class="{% if activate_page == 'index' %}active{% endif %}">Home</a>
+    <a href="{{ url_for('salmon_invoer')}}" class="{% if activate_page == 'salmon_invoer' %}active{% endif %}">Salmon invoer</a>
+    <a href="{{ url_for('uitleg')}}" class="{% if activate_page == 'uitleg' %}active{% endif %}">Uitleg</a>
+    <a href="{{ url_for('contact')}}" class="{% if activate_page == 'contact' %}active{% endif %}">Contact</a>
     </div>
 
     {% block content %} <!-- Wat elke pagina zelf kan invullen -->

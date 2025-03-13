@@ -10,7 +10,7 @@ def home():  # Redirect naar onze 'home' pagina
 def index():
     return render_template('index.html', title='Home', active_page='index')
 
-@app.route('/salmon_invoer')
+@app.route('/salmon_invoer', methods=['GET', 'POST'])
 def salmon_invoer():
     if request.method == 'GET':
         return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')

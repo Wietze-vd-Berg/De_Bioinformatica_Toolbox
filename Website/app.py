@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def home():  # put application's code here
+def home():  # Redirect naar onze 'home' pagina
     return redirect(url_for('index'))
 
 @app.route('/index')
@@ -22,7 +22,7 @@ def salmon_invoer():
 def uitleg():
     return render_template('uitleg.html', title='Uitleg', active_page='uitleg')
 
-@app.route('/Website/voorbeeld_data/<path:filename>')
+@app.route('/Website/voorbeeld_data/<path:filename>') # Om voorbeeld data te kunnen ophalen met flask, zonder dit geeft het een error
 def serve_json(filename):
     return send_from_directory('voorbeeld_data', filename)
 
@@ -30,9 +30,9 @@ def serve_json(filename):
 def contact():
     return render_template('contact.html', title='Contact', active_page='contact')
 
-@app.errorhandler(404)
+@app.errorhandler(404) # Leuke pagina not found error handling :)
 def page_not_found(e):
-    return f'<title>Error 404</title>Page not found! <br>{e}'
+    return f'<title>Error 404</title>{e}'
 
 if __name__ == '__main__':
     app.run()

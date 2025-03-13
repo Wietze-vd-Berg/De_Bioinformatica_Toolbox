@@ -2,7 +2,7 @@
     "Bron: https://www.createwithdata.com/visualising-data-with-js-getting-started/"
 
 document.addEventListener("DOMContentLoaded", function() { //javascript functie :O
-    fetch("voorbeeld_data/quant.json")
+    fetch("../Website/voorbeeld_data/quant.json")
         .then(response => response.json())
         .then(data => {
             console.log("Data geladen:", data); // Debug: controleer of de JSON correct wordt geladen

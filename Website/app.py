@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
-
+from flask import Flask, render_template, request, url_for, redirect, send_from_directory
 app = Flask(__name__)
 
 
@@ -22,6 +21,10 @@ def salmon_invoer():
 @app.route('/uitleg')
 def uitleg():
     return render_template('uitleg.html', title='Uitleg', active_page='uitleg')
+
+@app.route('/Website/voorbeeld_data/<path:filename>')
+def serve_json(filename):
+    return send_from_directory('voorbeeld_data', filename)
 
 @app.route('/contact')
 def contact():

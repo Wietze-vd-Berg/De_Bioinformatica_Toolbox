@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -9,7 +9,11 @@ def hello_world():  # put application's code here
 
 @app.route('/salmon_invoer')
 def salmon_invoer():
-    return render_template('salmon_invoer.html', title='Salmon Invoer')
+    if request.method == 'GET':
+        return render_template('salmon_invoer.html', title='Salmon Invoer')
+    elif request.method == 'POST':
+        kwargs = request.form
+        return render_template('resultaat.html', **kwargs, title='Resultaat')
 
 
 if __name__ == '__main__':

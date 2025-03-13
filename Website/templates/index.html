@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/CSS/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="static/js/TPM_visualisatie.js"></script>
 
     <title>{{ title }}</title>
 </head>
 <body>
     <div class="topnav"> <!-- Standaard nav wat wordt hergebruikt in de andere files -->
-    <a class="active" href="index.html">Home</a>
-    <a href="Salmon_invoer.html">Salmon invoer</a>
-    <a href="uitleg.html">Uitleg</a>
-    <a href="contact.html">Contact</a>
+    <a class="active" href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('salmon_invoer')}}">Salmon invoer</a>
+    <a href="{{ url_for('uitleg')}}">Uitleg</a>
+    <a href="{{ url_for('contact')}}">Contact</a>
     </div>
 
     {% block content %} <!-- Wat elke pagina zelf kan invullen -->

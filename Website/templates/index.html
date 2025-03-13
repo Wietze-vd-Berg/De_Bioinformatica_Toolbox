@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../static/CSS/style.css">
 
-    <title>Salmon</title>
+    <title>{{ title }}</title>
 </head>
 <body>
-    <div class="topnav">
+    <div class="topnav"> <!-- Standaard nav wat wordt hergebruikt in de andere files -->
     <a class="active" href="index.html">Home</a>
     <a href="Salmon_invoer.html">Salmon invoer</a>
     <a href="uitleg.html">Uitleg</a>
     <a href="contact.html">Contact</a>
     </div>
+
+    {% block content %} <!-- Wat elke pagina zelf kan invullen -->
     <h1>RNA-analyse met Salmon</h1>
     <p>
         RNA-sequencing is een techniek waarmee de hoeveelheid RNA in een monster wordt gemeten.</br>
@@ -35,6 +37,6 @@
 
     <h1>Zelf RNA-analyse uitvoeren.</h1>
     <a href="Salmon_invoer.html">Bezoek onze analysepagina om direct aan de slag te gaan met Salmon.</a>
-    </pre>
+    {% endblock %}
 </body>
 </html>

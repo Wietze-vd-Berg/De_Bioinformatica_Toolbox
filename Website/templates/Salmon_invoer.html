@@ -1,4 +1,27 @@
-{% extends 'index.html' %}
-{% block content %}
-Dummy
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/CSS/style.css">
+
+    <title>Salmon invoer</title>
+</head>
+<body>
+    <div class="topnav">
+    <a href="index.html">Home</a>
+    <a class="active" href="Salmon_invoer.html">Salmon invoer</a>
+    <a href="uitleg.html">Uitleg</a>
+    <a href="contact.html">Contact</a>
+    </div>
+
+    <form action="/submit" method="post">
+    <label for="option1">Option 1</label>
+    <input type="checkbox" id="option1" name="checkbox" value="Option 1"><br>
+    <label for="option2">Option 2</label>
+    <input type="checkbox" id="option2" name="checkbox" value="Option 2"><br>
+    <label for="option3">Option 3</label>
+    <input type="checkbox" id="option3" name="checkbox" value="Option 3"><br>
+    <input type="submit" value="Submit">
+
+</body>
+</html>

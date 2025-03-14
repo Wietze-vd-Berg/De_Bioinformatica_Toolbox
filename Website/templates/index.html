@@ -15,7 +15,7 @@
     <a href="{{ url_for('uitleg')}}" class="{% if active_page == 'uitleg' %}active{% endif %}">Uitleg</a>
     <a href="{{ url_for('contact')}}" class="{% if active_page == 'contact' %}active{% endif %}">Contact</a>
     {% if active_page =='resultaat' %} <a class="active">resultaat</a> {% endif %}
-    {% if active_page =='error_handling' %} <a class="active">error {{ error_code }}</a> {% endif %}
+    {% if active_page =='error_handling' %} <a class="active">error</a> {% endif %}
     </div>
 
     {% block content %} <!-- Wat elke pagina zelf kan invullen -->

@@ -32,7 +32,7 @@ def contact():
 
 @app.errorhandler(404) # Leuke pagina not found error handling :)
 def page_not_found(e):
-    return f'<title>Error 404</title>{e}'
+    return render_template('error_handling.html', title='Page not found', active_page='error_handling', error=e)
 
 if __name__ == '__main__':
     app.run()

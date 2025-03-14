@@ -1,4 +1,8 @@
 {% extends 'index.html' %}
 {% block content %}
-Dummy
+
+{% if cb1 %} Checkbox 1 was clicked {% endif %} <!-- Hier kan iets leuks worden gedaan ipv wat text -->
+{% if cb2 %} Checkbox 2 was clicked {% endif %} <!-- Hoeft niet opzich want dit is al dynamisch -->
+{% if cb3 %} Checkbox 3 was clicked {% endif %} <!-- (maar wel saai -->
+
 {% endblock %}

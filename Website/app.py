@@ -15,8 +15,12 @@ def salmon_invoer():
     if request.method == 'GET':
         return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
     elif request.method == 'POST':
-        kwargs = request.form
-        return render_template('resultaat.html', **kwargs, title='Resultaat', active_page='resultaat')
+        kwargs = {
+            'cb1' : request.form.get('checkbox1'),
+            'cb2' : request.form.get('checkbox2'),
+            'cb3' : request.form.get('checkbox3')
+        }
+        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
 
 @app.route('/uitleg')
 def uitleg():

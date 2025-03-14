@@ -34,9 +34,10 @@ def serve_json(filename):
 def contact():
     return render_template('contact.html', title='Contact', active_page='contact')
 
-@app.errorhandler(404) # Leuke pagina not found error handling :)
-def page_not_found(e):
-    return render_template('error_handling.html', title='Page not found', active_page='error_handling', error=e)
+@app.errorhandler(Exception) # Leuke pagina not found error handling :)
+def error_handler(e):
+    error_code = getattr(e, 'code', 500)
+    return render_template('error_handling.html', title=f'error {error_code}', active_page='error_handling', error=e, error_code=error_code)
 
 if __name__ == '__main__':
     app.run()

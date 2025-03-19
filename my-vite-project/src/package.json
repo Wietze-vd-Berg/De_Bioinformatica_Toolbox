@@ -6,9 +6,9 @@
     "vite": "^6.2.2"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview",
+    "dev": "../../node_modules/.bin/vite",
+    "build": "../../node_modules/.bin/vite build",
+    "serve": "../../node_modules/.bin/vite preview",
     "build:css": "npx tailwindcss -i ./CSS/style.css -o ./dist/style.css"
   }
 }

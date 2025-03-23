@@ -2,44 +2,80 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <link rel="stylesheet" href="../static/CSS/style.css">
-
-    <title>{{ title }}</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='afbeeldingen/favicon.ico') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salmon</title>
+    <!-- Verwijzen naar de juiste TailwindCSS versie via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script> 
+    <!-- FontAwesome voor pictogrammen -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="topnav"> <!-- Standaard nav wat wordt hergebruikt in de andere files -->
-    <a href="{{ url_for('index') }}" class="{% if active_page == 'index' %}active{% endif %}">Home</a>
-    <a href="{{ url_for('salmon_invoer')}}" class="{% if active_page == 'salmon_invoer' %}active{% endif %}">Salmon invoer</a>
-    <a href="{{ url_for('uitleg')}}" class="{% if active_page == 'uitleg' %}active{% endif %}">Uitleg</a>
-    <a href="{{ url_for('contact')}}" class="{% if active_page == 'contact' %}active{% endif %}">Contact</a>
-    {% if active_page =='resultaat' %} <a class="active">resultaat</a> {% endif %}
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Navigatiebalk -->
+    <nav class="bg-[#FFA07A] text-white py-4">
+        <div class="max-w-screen-xl mx-auto flex justify-between items-center px-4">
+            <a href="index.html" class="text-xl font-semibold hover:text-gray-200">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <div class="space-x-6">
+                <a href="Salmon_invoer.html" class="hover:text-gray-200">
+                    <i class="fas fa-vials"></i> Salmon invoer
+                </a>
+                <a href="uitleg.html" class="hover:text-gray-200">
+                    <i class="fas fa-info-circle"></i> Uitleg
+                </a>
+                <a href="contact.html" class="hover:text-gray-200">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hoofdsectie -->
+    <div class="max-w-screen-lg mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-6">RNA-analyse met Salmon</h1>
+
+        <p class="text-lg mb-4">
+            RNA-sequencing is een techniek waarmee de hoeveelheid RNA in een monster wordt gemeten. Deze website dient als een efficiënte manier om RNA-seq data te analyseren met behulp van Salmon, een krachtige tool voor het kwantificeren van de genexpressie, het tot uitdrukking brengen van bepaalde genen.
+            <a href="https://www.nature.com/articles/nrg2484" class="text-blue-600 hover:underline" target="_blank">RNA-Seq: a revolutionary tool for transcriptomics</a>
+        </p>
+        
+        <p class="text-lg mb-4">
+            Salmon is een transcriptkwantificatie-tool, wat betekent dat het berekent hoeveel van elk RNA-transcript aanwezig is. 
+            <a href="https://combine-lab.github.io/salmon/" class="text-blue-600 hover:underline" target="_blank">Salmon website</a>.
+            Een transcript is een afgeschreven kopie van een gen, die later kan worden vertaald naar een eiwit.
+            Salmon gebruikt een probabilistisch model, wat inhoudt dat het wiskundige waarschijnlijkheden gebruikt om meetfouten te corrigeren.
+        </p>
+
+        <p class="text-lg mb-6">
+            Een groot voordeel van Salmon is pseudo-uitlijning. Bij traditionele methoden worden RNA-sequenties volledig uitgelijnd tegen een referentiegenoom, wat veel rekenkracht kost.
+            <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0881-8" class="text-blue-600 hover:underline" target="_blank">A survey of best practices for RNA-seq data analysis</a>.
+            Pseudo-uitlijning daarentegen bepaalt snel of een RNA-fragment overeenkomt met bekende genen zonder de exacte positie te bepalen.
+            <a href="https://www.nature.com/articles/nbt.3519" class="text-blue-600 hover:underline" target="_blank">Near-optimal probabilistic RNA-seq quantification</a>.
+            Dit maakt de analyse vele malen sneller en efficiënter.
+        </p>
+
+        <!-- Zelf RNA-analyse uitvoeren -->
+        <h2 class="text-2xl font-semibold text-center mb-4">Zelf RNA-analyse uitvoeren</h2>
+        <p class="text-center mb-6">Bezoek onze analysepagina om direct aan de slag te gaan met Salmon.</p>
+        <div class="flex justify-center">
+            <a href="Salmon_invoer.html" class="bg-[#FFA07A] text-white py-2 px-6 rounded-full hover:bg-[#FF8C69] transition duration-300">
+                <i class="fas fa-play-circle"></i> Start Analyse
+            </a>
+        </div>
+
+        <!-- Chart container (voorbeeld) -->
+        <div id="chart-container" class="mt-12">
+            <canvas id="voorbeeld_chart" class="w-full h-64 bg-gray-200 rounded-lg shadow-md"></canvas>
+        </div>
     </div>
 
-    {% block content %} <!-- Wat elke pagina zelf kan invullen -->
-    <h1>RNA-analyse met Salmon</h1>
-    <p>
-        RNA-sequencing is een techniek waarmee de hoeveelheid RNA in een monster wordt gemeten.</br>
-    Deze website dient als een efficiënte manier om RNA-seq data analyseren met behulp van Salmon,</br>
-    een krachtige tool voor het kwantificeren van de genexpressie, het tot uitdrukking brengen van bepaalde genen. [<a href="https://www.nature.com/articles/nrg2484">RNA-Seq: a revolutionary tool for transcriptomics</a>]
-    </p>
-
-    <p>
-    Salmon is een transcriptkwantificatie-tool, wat betekent dat het berekent hoeveel van elk RNA-transcript aanwezig is. [<a href="https://combine-lab.github.io/salmon/">Salmon website</a>]</br>
-    Een transcript is een afgeschreven kopie van een gen, die later kan worden vertaald naar een eiwit.</br>
-    Salmon gebruikt een probabilistisch model, wat inhoudt dat het wiskundige waarschijnlijkheden gebruikt om meetfouten te corrigeren.
-    </p>
-
-    <p>
-    Een groot voordeel van Salmon is pseudo-uitlijning.</br>
-    Bij traditionele methoden worden RNA-sequenties volledig uitgelijnd tegen een referentiegenoom, wat veel rekenkracht kost. [<a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0881-8">A survey of best practices for RNA-seq data analysis</a>]</br>
-    Pseudo-uitlijning daarentegen bepaalt snel of een RNA-fragment overeenkomt met bekende genen zonder de exacte positie te bepalen. [<a href="https://www.nature.com/articles/nbt.3519">Near-optimal probabilistic RNA-seq quantification</a>]</br>
-    Dit maakt de analyse vele malen sneller en efficiënter.
-    </p>
-
-    <h1>Zelf RNA-analyse uitvoeren.</h1>
-    <a href="Salmon_invoer.html">Bezoek onze analysepagina om direct aan de slag te gaan met Salmon.</a>
-    {% endblock %}
 </body>
 </html>
+
+
+
+
+
+
+

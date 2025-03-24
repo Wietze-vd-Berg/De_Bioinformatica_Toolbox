@@ -1,59 +1,87 @@
 from flask import Flask, render_template, request, url_for, redirect, send_from_directory
+
 app = Flask(__name__)
 
 
 @app.route('/')
-def home():  # Redirect naar onze 'home' pagina
-    return redirect(url_for('index'))
-
 @app.route('/index')
 def index():
-    return render_template('index.html',
-                           title='Home',
-                           active_page='index')
+    """
+    Rendert de indexpagina van de website.
+
+    :param: Geen parameters.
+    :return: De gerenderde 'index.html'-sjabloon met titel en actieve pagina.
+    """
+    return render_template('index.html', title='Home', active_page='index')
+
 
 @app.route('/salmon_invoer', methods=['GET', 'POST'])
 def salmon_invoer():
-    if request.method == 'GET':
-        return render_template('salmon_invoer.html',
-                               title='Salmon Invoer',
-                               active_page='salmon_invoer')
+    """
+    Behandelt de Salmon invoerpagina en verwerkt formulierinzendingen.
 
+    Bij GET wordt de invoerpagina getoond. Bij POST worden checkbox-gegevens
+    verzameld en doorgestuurd naar de resultaatpagina.
+
+    :param: Geen directe parameters, maar gebruikt 'request' voor formulierdata.
+    :return: De gerenderde 'salmon_invoer.html' bij GET, of 'resultaat.html' bij POST.
+    """
+    if request.method == 'GET':
+        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
     elif request.method == 'POST':
+        # Verkrijg checkbox-waarden uit het formulier
         kwargs = {
-            'cb1' : request.form.get('checkbox1'),
-            'cb2' : request.form.get('checkbox2'),
-            'cb3' : request.form.get('checkbox3')
+            'cb1': request.form.get('checkbox1'),
+            'cb2': request.form.get('checkbox2'),
+            'cb3': request.form.get('checkbox3')
         }
-        return render_template('resultaat.html',
-                               title='Resultaat',
-                               active_page='resultaat',
-                               **kwargs)
+        # Render resultaatpagina met checkbox-gegevens
+        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
+
 
 @app.route('/uitleg')
 def uitleg():
-    return render_template('uitleg.html',
-                           title='Uitleg',
-                           active_page='uitleg')
+    """
+    Rendert de uitlegpagina.
 
-@app.route('/Website/voorbeeld_data/<path:filename>') # Om voorbeeld data te kunnen ophalen met flask, zonder dit geeft het een error
+    :param: Geen parameters.
+    :return: De gerenderde 'uitleg.html'-sjabloon met titel en actieve pagina.
+    """
+    return render_template('uitleg.html', title='Uitleg', active_page='uitleg')
+
+
+@app.route('/Website/voorbeeld_data/<path:filename>')
 def serve_json(filename):
-    return send_from_directory('voorbeeld_data',
-                               filename)
+    """
+    Serveert bestanden uit de 'voorbeeld_data'-map.
+
+    :param filename: De naam van het bestand dat geserveerd moet worden.
+    :return: Het gevraagde bestand uit de 'voorbeeld_data'-directory.
+    """
+    return send_from_directory('voorbeeld_data', filename)
+
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html',
-                           title='Contact',
-                           active_page='contact')
+    """
+    Rendert de contactpagina.
 
-@app.errorhandler(Exception) # Leuke pagina not found error handling :)
-def error_handler(e):
-    error_code = getattr(e, 'code', 500)
-    return render_template('error_handling.html',
-                           title=f'error {error_code}',
-                           active_page='error_handling',
-                           error=e)
+    :param: Geen parameters.
+    :return: De gerenderde 'contact.html'-sjabloon met titel en actieve pagina.
+    """
+    return render_template('contact.html', title='Contact', active_page='contact')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """
+    Behandelt 404-fouten en toont een aangepaste foutpagina.
+
+    :param e: De fout die de 404 heeft veroorzaakt.
+    :return: De gerenderde 'error_handling.html'-sjabloon met foutinformatie.
+    """
+    return render_template('error_handling.html', title='Page not found', active_page='error_handling', error=e)
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

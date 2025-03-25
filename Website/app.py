@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, send_from_directory
-
+from Website.static.py.salmon import salmon_handler
 app = Flask(__name__)
 
 
@@ -35,6 +35,7 @@ def salmon_invoer():
             'cb2': request.form.get('checkbox2'),
             'cb3': request.form.get('checkbox3')
         }
+        salmon_handler(kwargs)
         # Render resultaatpagina met checkbox-gegevens
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
 

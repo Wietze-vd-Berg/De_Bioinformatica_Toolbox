@@ -13,9 +13,12 @@
             <h2 class="text-2xl font-semibold mb-4"><i class="fas fa-chart-bar text-[#FFA07A]"></i> Salmon Analyse</h2>
             <p class="text-gray-700"></p>
             <ul>
-            {% if cb1 %} <li>Optie 1: {{ cb1 }}</li> {% endif %}
-            {% if cb2 %} <li>Optie 2: {{ cb2 }}</li> {% endif %}
-            {% if cb3 %} <li>Optie 3: {{ cb3 }}</li> {% endif %}
+            {% if cb1 %} <li>Geindexeerde data: {{ cb1 }}</li> {% endif %}
+            {% if cb2 %} <li>Handmatig libtype: {{ cb2 }}</li> {% endif %}
+            {% if cb3 %} <li>Meerdere bestanden vergelijken: {{ cb3 }}</li> {% endif %}
+            {% if cb4 %} <li>gcBias: {{ cb4 }}</li> {% endif %}
+            {% if cb5 %} <li>posBias: {{ cb5 }}</li> {% endif %}
+            {% if cb6 %} <li>seqBias: {{ cb6 }}</li> {% endif %}
             </ul>
             <span class="text-gray-500 italic">Analyse wordt nog verwerkt of er is geen data beschikbaar.</span>
         </div>

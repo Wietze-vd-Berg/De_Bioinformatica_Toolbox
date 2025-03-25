@@ -33,7 +33,10 @@ def salmon_invoer():
         kwargs = {
             'cb1': request.form.get('checkbox1'),
             'cb2': request.form.get('checkbox2'),
-            'cb3': request.form.get('checkbox3')
+            'cb3': request.form.get('checkbox3'),
+            'cb4': request.form.get('checkbox4'),
+            'cb5': request.form.get('checkbox5'),
+            'cb6': request.form.get('checkbox6')
         }
         # Render resultaatpagina met checkbox-gegevens
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)

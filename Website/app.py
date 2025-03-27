@@ -27,22 +27,17 @@ def salmon_invoer():
     :return: De gerenderde 'salmon_invoer.html' bij GET, of 'resultaat.html' bij POST.
     """
     if request.method == 'GET':
-        kwargs = {
-            'indexeddata': request.form.get('checkbox1'),
-            'addlibtype': request.form.get('checkbox2'),
-            'addmultiplefiles': request.form.get('checkbox3'),
-            'addgcbias': request.form.get('checkbox4'),
-            'addposbias': request.form.get('checkbox5'),
-            'addseqbias': request.form.get('checkbox6')
-        }
+
         extra_input = False  # Standaard geen extra invoerveld
 
         if "checkbox3" in request.form:
-            print("hallo!")  # Controleren of de checkbox is aangevinkt
+            print("ik werk!")
             extra_input = True
             print(extra_input)
+        else:
+            print("Ik doe moeilijk en werk niet")
 
-        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer', extra_input_file=extra_input, **kwargs)
+        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer', extra_input_file=extra_input)
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
         kwargs = {
@@ -54,9 +49,9 @@ def salmon_invoer():
             'addseqbias': request.form.get('checkbox6')
         }
 
-        fasta_file = request.files.get('fasta-file')
+        fasta_file = request.files.get("fasta-file")
         if fasta_file:
-            kwargs['fasta_file'] = fasta_file  # toevoegen aan de kwargs
+            kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
 
         # Render resultaatpagina met checkbox-gegevens
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)

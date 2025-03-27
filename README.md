@@ -1,5 +1,5 @@
 # Bioinformatica_Toolbox_Salmon
-version 2.0, Date: 2/25/2025
+version 2.0, Date: February 25, 2025
 
 Authors: Nicole Bovenga, Joris Deelstra, Wietze van den Berg, Vincent de Jong en Marit van Nuil
  
@@ -15,7 +15,7 @@ Users upload RNA-sequencing files, and the tool processes them using Salmon to a
 They can then compare the RNA samples and explore differences. The tool generates visual reports that the user can download or export. [[3]](https://salmon.readthedocs.io/en/latest/salmon.html)
 
 ## Requirements
-Machine with python 2.7 or higher. <br>
+Machine with python 3.7 or higher <br>
 This guide is for Linux operating systems.
 
 ## Installation
@@ -28,7 +28,10 @@ Everything in parentheses is an explanation and should not be executed!
 Everything between <> is a physical button you need to press!
  
 1. Go to www.anaconda.com/download
- 
+    Or dowload in terminal, type: wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    This link is the latest version as of March 2025 and can change. 
+    You can skip step 2 and 3 of you dowload from terminal. 
+    
 2. Install the Linux version for Python 3.12 64-Bit (x86) Installer.
  
 3. Once installed, open the terminal.

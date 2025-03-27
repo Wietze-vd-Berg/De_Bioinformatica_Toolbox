@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, send_from_directory
-from Website.static.py.salmon import salmon_handler
+from static.py.salmon import salmon_handler
 app = Flask(__name__)
 
 

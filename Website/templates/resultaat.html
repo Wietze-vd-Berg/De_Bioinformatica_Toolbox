@@ -23,7 +23,9 @@
             <span class="text-gray-500 italic">Analyse wordt nog verwerkt of er is geen data beschikbaar.</span>
         </div>
 
-        {{ result }}
+        {% if result['success'] %} Succes yippie {% endif %}
+        {% if not result['success'] %} {{ result }} {% endif %}
+
 
         <div class="flex justify-center mt-6">
             <a href="{{ url_for('salmon_invoer') }}" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">

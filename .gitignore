@@ -1,3 +1,6 @@
 .idea
 Website/__pycache__/
 Website/static/py/__pycache__/
+Website/index
+Website/output
+Website/uploads

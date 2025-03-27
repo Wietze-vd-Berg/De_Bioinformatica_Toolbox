@@ -27,7 +27,22 @@ def salmon_invoer():
     :return: De gerenderde 'salmon_invoer.html' bij GET, of 'resultaat.html' bij POST.
     """
     if request.method == 'GET':
-        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
+        kwargs = {
+            'cb1': request.form.get('checkbox1'),
+            'cb2': request.form.get('checkbox2'),
+            'cb3': request.form.get('checkbox3'),
+            'cb4': request.form.get('checkbox4'),
+            'cb5': request.form.get('checkbox5'),
+            'cb6': request.form.get('checkbox6')
+        }
+        extra_input = False  # Standaard geen extra invoerveld
+
+        if "checkbox3" in request.form:
+            print("hallo!")  # Controleren of de checkbox is aangevinkt
+            extra_input = True
+            print(extra_input)
+
+        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer', extra_input_file=extra_input, **kwargs)
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
         kwargs = {
@@ -38,6 +53,7 @@ def salmon_invoer():
             'cb5': request.form.get('checkbox5'),
             'cb6': request.form.get('checkbox6')
         }
+
         # Render resultaatpagina met checkbox-gegevens
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
 

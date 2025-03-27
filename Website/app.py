@@ -46,13 +46,17 @@ def salmon_invoer():
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
         kwargs = {
-            'cb1': request.form.get('checkbox1'),
-            'cb2': request.form.get('checkbox2'),
-            'cb3': request.form.get('checkbox3'),
-            'cb4': request.form.get('checkbox4'),
-            'cb5': request.form.get('checkbox5'),
-            'cb6': request.form.get('checkbox6')
+            'indexeddata': request.form.get('checkbox1'),
+            'addlibtype': request.form.get('checkbox2'),
+            'addmultiplefiles': request.form.get('checkbox3'),
+            'addgcbias': request.form.get('checkbox4'),
+            'addposbias': request.form.get('checkbox5'),
+            'addseqbias': request.form.get('checkbox6')
         }
+
+        fasta_file = request.files.get('fasta-file')
+        if fasta_file:
+            kwargs['fasta_file'] = fasta_file  # toevoegen aan de kwargs
 
         # Render resultaatpagina met checkbox-gegevens
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)

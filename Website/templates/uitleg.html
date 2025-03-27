@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Code wat TPM_visualisatie.js gebruikt voor grafieken -->
+<script src="../static/js/TPM_visualisatie.js"></script> <!-- TPM_visualisatie.js hemzelf -->
+
     <!-- Hoofdsectie -->
     <div class="max-w-screen-lg mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-6">Wat is Salmon?</h1>
@@ -30,5 +33,9 @@
             Na de analyse krijgen gebruikers niet alleen de ruwe resultaten te zien, maar ook een visuele weergave van de genexpressieverschillen in de vorm van een heatmap.
             Deze heatmap maakt het eenvoudig om in één oogopslag te zien hoe genexpressie varieert tussen verschillende condities of monsters.
         </p>
+    </div>
+
+    <div id = 'chart-container'> <!-- Voorbeeld chart, als we tijd over hebben kunnen we hier nog verder aan werken -->
+        <canvas id="voorbeeld_chart"></canvas>
     </div>
 {% endblock %}

@@ -28,12 +28,12 @@ def salmon_invoer():
     """
     if request.method == 'GET':
         kwargs = {
-            'cb1': request.form.get('checkbox1'),
-            'cb2': request.form.get('checkbox2'),
-            'cb3': request.form.get('checkbox3'),
-            'cb4': request.form.get('checkbox4'),
-            'cb5': request.form.get('checkbox5'),
-            'cb6': request.form.get('checkbox6')
+            'indexeddata': request.form.get('checkbox1'),
+            'addlibtype': request.form.get('checkbox2'),
+            'addmultiplefiles': request.form.get('checkbox3'),
+            'addgcbias': request.form.get('checkbox4'),
+            'addposbias': request.form.get('checkbox5'),
+            'addseqbias': request.form.get('checkbox6')
         }
         extra_input = False  # Standaard geen extra invoerveld
 

@@ -41,10 +41,10 @@ def salmon_invoer():
         fasta_file = request.files.get('fasta-file')
         if fasta_file:
             kwargs['fasta_file'] = fasta_file  # toevoegen aan de kwargs
-        salmon_handler(kwargs)
+        quantresult = salmon_handler(kwargs)
 
         # Render resultaatpagina met checkbox-gegevens
-        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
+        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', result=quantresult, **kwargs)
 
 
 @app.route('/uitleg')

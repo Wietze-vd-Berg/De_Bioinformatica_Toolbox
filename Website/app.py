@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, send_from_directory
-from static.py.salmon import salmon_handler
+
 app = Flask(__name__)
 
 
@@ -27,7 +27,17 @@ def salmon_invoer():
     :return: De gerenderde 'salmon_invoer.html' bij GET, of 'resultaat.html' bij POST.
     """
     if request.method == 'GET':
-        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
+
+        extra_input = False  # Standaard geen extra invoerveld
+
+        if "checkbox3" in request.form:
+            print("ik werk!")
+            extra_input = True
+            print(extra_input)
+        else:
+            print("Ik doe moeilijk en werk niet, loser!")
+
+        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer', extra_input_file=extra_input)
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
         kwargs = {
@@ -38,13 +48,13 @@ def salmon_invoer():
             'addposbias': request.form.get('checkbox5'),
             'addseqbias': request.form.get('checkbox6')
         }
-        fasta_file = request.files.get('fasta-file')
+
+        fasta_file = request.files.get("fasta-file")
         if fasta_file:
-            kwargs['fasta_file'] = fasta_file  # toevoegen aan de kwargs
-        quantresult = salmon_handler(kwargs)
+            kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
 
         # Render resultaatpagina met checkbox-gegevens
-        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', result=quantresult, **kwargs)
+        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
 
 
 @app.route('/uitleg')

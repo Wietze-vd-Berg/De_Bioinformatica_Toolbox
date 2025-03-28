@@ -5,7 +5,7 @@
         <h1 class="text-3xl font-bold text-center mb-6">Analyse Resultaten</h1>
 
         <p class="text-lg mb-6 text-center">
-            Hier zijn de resultaten van je Salmon-analyse op basis van het geüploade FASTA-bestand.
+            Hier zijn de resultaten van je Salmon-analyse op basis van de geüploade bestanden.
             
         </p>
 
@@ -22,10 +22,6 @@
             </ul>
             <span class="text-gray-500 italic">Analyse wordt nog verwerkt of er is geen data beschikbaar.</span>
         </div>
-
-        {% if result['success'] %} Succes yippie {% endif %}
-        {% if not result['success'] %} {{ result }} {% endif %}
-
 
         <div class="flex justify-center mt-6">
             <a href="{{ url_for('salmon_invoer') }}" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">

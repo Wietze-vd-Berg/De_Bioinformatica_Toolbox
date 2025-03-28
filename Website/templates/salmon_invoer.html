@@ -12,19 +12,25 @@
             <div>
                 <label for="fasta-file" class="block text-lg font-semibold mb-2">Upload een FASTA-bestand</label>
                 <input type="file" id="fasta-file" name="fasta-file" accept=".fasta, .fas, .fa" class="border border-gray-300 p-2 w-full rounded-md">
-                <p> <input type="checkbox" name="checkbox1" value="checked"> Data is al geindexeerd
+            </div>
+        <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="fastq-file" class="block text-lg font-semibold mb-2">Upload het eerste FASTQ-bestand</label>
+                <input type="file" id="fastq-file" name="fastq-file" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
+            </div>
+        <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="fastq-file" class="block text-lg font-semibold mb-2">Upload het tweede FASTQ-bestand</label>
+                <input type="file" id="fastq-file2" name="fastq2-file" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
+            </div>
+            <div>
+            <p> <input type="checkbox" name="checkbox1" value="checked"> Data is al geindexeerd
                 <input type="checkbox" name="checkbox2" value="checked"> Handmatig libtype meegeven
                 <input type="checkbox" name="checkbox3" value="checked"> Meerdere bestanden vergelijken </p>
                 <p> <input type="checkbox" name="checkbox4" value="checked"> gcBias inschakelen
                 <input type="checkbox" name="checkbox5" value="checked"> posBias inschakelen
                 <input type="checkbox" name="checkbox6" value="checked"> seqBias inschakelen </p>
             </div>
-
-            <h1> {{ extra_input_file }} </h1>
-            {% if extra_input_file == True %}
-            <label for="extra-file" class="block text-lg font-semibold mb-2">Upload een extra bestand</label>
-            <input type="file" id="extra-file" name="extra-file" accept=".fasta"><br><br>
-            {% endif %}
 
             <div class="flex justify-center">
                 <button type="submit" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">

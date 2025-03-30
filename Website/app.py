@@ -54,13 +54,6 @@ def salmon_invoer():
     if request.method == 'GET':
         extra_input = False  # Standaard geen extra invoerveld
 
-        if "checkbox3" in request.form:
-            print("ik werk!")
-            extra_input = True
-            print(extra_input)
-        else:
-            print("Ik doe moeilijk en werk niet, loser!")
-
         return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer',
                                extra_input_file=extra_input)
     elif request.method == 'POST':

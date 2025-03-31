@@ -39,10 +39,10 @@ class SalmonInvoer:
             '-i', self.index_dir
         ]
         try:
-            subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, check=True)
+            subprocess.check_output(console_cmd, text=True)
             return {'success': True}
         except subprocess.CalledProcessError as e:
-            return {'success': False, 'error': e.stderr}
+            return {'success': False, 'error': e}
         # geeft een error als er geen output in staat
 
     def run_quant(self):
@@ -62,24 +62,33 @@ class SalmonInvoer:
         ]
 
         try:
-            output = subprocess.check_output(console_cmd, text=True)
+            output = subprocess.run(console_cmd)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
 
         return {'success': True, 'output': output}
 
     def get_result(self):
-        """
-        Haalt het resultaat op van de Salmon-kwantisatie.
-
-        :return: Het resultaat van de kwantisatie, of een foutmelding als het bestand niet wordt gevonden.
-        """
         result_file = os.path.join(self.output_dir, 'quant.sf')
         if os.path.exists(result_file):
-            with open(result_file, 'r') as f:
-                return {'success': True, 'result': f.readlines()}
+            try:
+                with open(result_file, 'r') as f:
+                    lines = f.readlines()
+
+                header = lines[0].strip().split('\t')
+                result_list = []
+
+                for line in lines[1:]:
+                    values = line.strip().split('\t')
+                    entry = dict(zip(header, values))
+                    entry['TPM'] = float(entry['TPM'])  # Zorg dat TPM numeriek is
+                    result_list.append(entry)
+
+                return {'success': True, 'result': result_list}
+            except Exception as e:
+                return {'success': False, 'error': f'Fout bij inlezen quant.sf: {e}'}
         else:
-            return {'success': False, 'error': 'File not found'}
+            return {'success': False, 'error': 'quant.sf niet gevonden'}
 
 
 def salmon_handler(opties):

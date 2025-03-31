@@ -32,16 +32,18 @@ def salmon_invoer():
         kwargs = {}
 
         fasta_file = request.files.get("fasta-file")
+        fastq_file1 = request.files.get("fastq-file1")
+        fastq_file2 = request.files.get("fastq-file2")
+
+        if not fasta_file or not fastq_file1 or not fastq_file2:
+            return 'error-bericht'
+
         if fasta_file:
             kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
 
-        # Voer de Salmon-analyse uit met de gegeven parameters
-        quantresult = salmon_handler(kwargs)
-        fastq_file1 = request.files.get("fastq-file1")
         if fastq_file1:
             kwargs["fastq_file1"] = fastq_file1
 
-        fastq_file2 = request.files.get("fastq-file2")
         if fastq_file2:
             kwargs["fastq_file2"] = fastq_file2
 
@@ -49,7 +51,7 @@ def salmon_invoer():
         quantresult = salmon_handler(kwargs)
 
         if not quantresult['success']: # Error handling
-            return str(quantresult['error'].replace('\n', '<br>')), 400 #returnd de error plus een 400 status code
+            return str(quantresult['error']).replace('\n', '<br>'), 400 #returnd de error plus een 400 status code
 
         # Veronderstel dat quantresult de analysegegevens bevat die je nodig hebt voor de heatmap
         # Zorg ervoor dat quantresult de juiste vorm heeft (bijv. een 2D lijst of numpy array)
@@ -58,11 +60,10 @@ def salmon_invoer():
         # Voorbeeld: neem aan dat quantresult een dictionary is en dat 'data' een numpy array bevat.
         # Pas dit aan op basis van je werkelijke output van Salmon
 
-        data_fastq1 = quantresult['fastq1']
-        data_fastq2 = quantresult['fastq2']
+        data_fastq1 = quantresult['result']
 
         # Genereer de staafgrafiek
-        bar_chart_data = generate_bar_chart(data_fastq1, data_fastq2)
+        bar_chart_data = generate_bar_chart(data_fastq1)
 
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat',
                                bar_chart_data=bar_chart_data)
@@ -95,7 +96,7 @@ def contact():
 
 
 
-def generate_bar_chart(data_fastq1, data_fastq2):
+def generate_bar_chart(data_fastq1):
     """
     Genereert een staafgrafiek met TPM-expressie van de top 10 genen.
 
@@ -106,15 +107,12 @@ def generate_bar_chart(data_fastq1, data_fastq2):
     top10 = sorted(data_fastq1, key=lambda x: x['TPM'], reverse=True)[:10]
     labels = [d['Name'] for d in top10]
     values_fastq1 = [d['TPM'] for d in top10]
-    gen_dict_fastq2 = {d['Name']: d['TPM'] for d in data_fastq2}
-    values_fastq2 = [gen_dict_fastq2.get(label, 0) for label in labels]
 
     fig, ax = plt.subplots(figsize=(10, 6))
     bar_width = 0.35
     x = np.arange(len(labels))
 
     ax.bar(x - bar_width/2, values_fastq1, bar_width, label='FASTQ 1', color='salmon')
-    ax.bar(x + bar_width/2, values_fastq2, bar_width, label='FASTQ 2', color='lightblue')
 
     ax.set_xlabel('Genen')
     ax.set_ylabel('TPM Expressie')

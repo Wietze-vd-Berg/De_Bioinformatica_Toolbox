@@ -1,35 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Hoofdsectie -->
     <div class="max-w-screen-lg mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-6">Salmon invoer</h1>
-        <p class="text-lg mb-4">
+        <p class="text-lg mb-4"></p>
 
-        </p>
-
-        <!-- Bestandsinvoer sectie -->
         <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
             <div>
                 <label for="fasta-file" class="block text-lg font-semibold mb-2">Upload een FASTA-bestand</label>
                 <input type="file" id="fasta-file" name="fasta-file" accept=".fasta, .fas, .fa" class="border border-gray-300 p-2 w-full rounded-md">
             </div>
-        <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
+
             <div>
-                <label for="fastq-file" class="block text-lg font-semibold mb-2">Upload het eerste FASTQ-bestand</label>
-                <input type="file" id="fastq-file" name="fastq-file" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
+                <label for="fastq-file1" class="block text-lg font-semibold mb-2">Upload het eerste FASTQ-bestand</label>
+                <input type="file" id="fastq-file1" name="fastq-file1" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
             </div>
-        <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
+
             <div>
-                <label for="fastq-file" class="block text-lg font-semibold mb-2">Upload het tweede FASTQ-bestand</label>
-                <input type="file" id="fastq-file2" name="fastq2-file" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
-            </div>
-            <div>
-            <p> <input type="checkbox" name="checkbox1" value="checked"> Data is al geindexeerd
-                <input type="checkbox" name="checkbox2" value="checked"> Handmatig libtype meegeven
-                <input type="checkbox" name="checkbox3" value="checked"> Meerdere bestanden vergelijken </p>
-                <p> <input type="checkbox" name="checkbox4" value="checked"> gcBias inschakelen
-                <input type="checkbox" name="checkbox5" value="checked"> posBias inschakelen
-                <input type="checkbox" name="checkbox6" value="checked"> seqBias inschakelen </p>
+                <label for="fastq-file2" class="block text-lg font-semibold mb-2">Upload het tweede FASTQ-bestand</label>
+                <input type="file" id="fastq-file2" name="fastq-file2" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
             </div>
 
             <div class="flex justify-center">

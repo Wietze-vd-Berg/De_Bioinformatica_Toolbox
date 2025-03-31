@@ -65,18 +65,19 @@ def salmon_invoer():
 
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
-        kwargs = {
-            'indexeddata': request.form.get('checkbox1'),
-            'addlibtype': request.form.get('checkbox2'),
-            'addmultiplefiles': request.form.get('checkbox3'),
-            'addgcbias': request.form.get('checkbox4'),
-            'addposbias': request.form.get('checkbox5'),
-            'addseqbias': request.form.get('checkbox6')
-        }
+        kwargs = {}
 
         fasta_file = request.files.get("fasta-file")
         if fasta_file:
             kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
+
+        fastq_file1 = request.files.get("fastq-file1")
+        if fastq_file1:
+            kwargs["fastq_file1"] = fastq_file1
+
+        fastq_file2 = request.files.get("fastq-file2")
+        if fastq_file2:
+            kwargs["fastq_file2"] = fastq_file2
 
         # Voer de Salmon-analyse uit met de gegeven parameters
         quantresult = salmon_handler(kwargs)

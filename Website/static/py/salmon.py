@@ -5,7 +5,7 @@ import subprocess
 class SalmonInvoer:
 #Classes die verantwoordelijk is voor het uitvoeren van Salmon-indexering en kwantisatie
 
-    def __init__(self, index_path, input_file):
+    def __init__(self, index_path, input_file, r1, r2):
         """
         Initialiseert de klassenvariabelen voor indexeren en kwantiseren.
 
@@ -13,18 +13,24 @@ class SalmonInvoer:
         :param input_file: Het bestand dat geüpload is voor verwerking.
         """
         self.input_file_path = index_path
-        self.output_dir = f'../Website/output/{input_file.filename}'
+        self.r1 = r1
+        self.r2 = r2
 
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
+        self.output_dir_r1 = f'../Website/salmon_file_manager/output/{input_file.filename}/r1'
+        self.output_dir_r2 = f'../Website/salmon_file_manager/output/{input_file.filename}/r2'
+
+        if not os.path.exists(self.output_dir_r1):
+            os.makedirs(self.output_dir_r1)
+        if not os.path.exists(self.output_dir_r2):
+            os.makedirs(self.output_dir_r2)
         # waneer output map niet bestaat maakt hij een aan
 
-        self.index_dir = f'../Website/index/{input_file.filename}'
+        self.index_dir = f'../Website/salmon_file_manager/index/{input_file.filename}'
 
         if not os.path.exists(self.index_dir):
             os.makedirs(self.index_dir)
 
-    def run_index(self, input_file_path):
+    def run_index(self):
         """
         Voert de Salmon-indexering uit op het opgegeven bestand.
 
@@ -33,7 +39,7 @@ class SalmonInvoer:
         """
         console_cmd = [
             'salmon', 'index',
-            '-t', input_file_path,
+            '-t', self.input_file_path,
             '-i', self.index_dir
         ]
         try:
@@ -43,26 +49,41 @@ class SalmonInvoer:
             return {'success': False, 'error': e}
         # geeft een error als er geen output in staat
 
-    def run_quant(self, input_file):
+    def run_quant(self):
         """
         Voert de Salmon-kwantisatie uit op het geüploade bestand.
 
-        :param input_file: Het bestand dat moet worden gekwantificeerd.
         :return: Een dictionary met het resultaat van de kwantisatie.
         """
         console_cmd = [
             'salmon', 'quant',
             '-i', self.index_dir,
             '-l', 'A',
-            '-r', self.input_file_path,
-            '-o', self.output_dir,
+            '-1', self.r1,
+            '-2', self.r2,
+            '-o', self.output_dir_r1,
         ]
 
         try:
-            output = subprocess.check_output(console_cmd, text=True)
-            return {'success': True, 'output': output}
+            output1 = subprocess.check_output(console_cmd, text=True)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
+
+        console_cmd = [
+            'salmon', 'quant',
+            '-i', self.index_dir,
+            '-l', 'A',
+            '-1', self.r2,
+            '-2', self.r1,
+            '-o', self.output_dir_r2,
+        ]
+
+        try:
+            output2 = subprocess.check_output(console_cmd, text=True)
+        except subprocess.CalledProcessError as e:
+            return {'success': False, 'error': str(e)}
+
+        return {'success': True, 'output1': output1, 'output2': output2}
 
     def get_result(self):
         """
@@ -70,7 +91,7 @@ class SalmonInvoer:
 
         :return: Het resultaat van de kwantisatie, of een foutmelding als het bestand niet wordt gevonden.
         """
-        result_file = os.path.join(self.output_dir, 'quant.sf')
+        result_file = os.path.join(self.output_dir_r1, 'quant.sf')
         if os.path.exists(result_file):
             with open(result_file, 'r') as f:
                 return {'success': True, 'result': f.readlines()}
@@ -85,20 +106,27 @@ def salmon_handler(opties):
     :param opties: De checkboxes die in de SalmonInvoer-klasse worden aangevinkt als kwargs.
     :return: Het resultaat van de Salmon-analyse of een foutmelding.
     """
-    uploaded_file = opties['fasta_file']
-    file_path = os.path.join('../Website/uploads', uploaded_file.filename)
+    fasta_file = opties['fasta_file']
+    fasta_file_path = os.path.join('../Website/salmon_file_manager/uploads', fasta_file.filename)
+    fastq_file1 = opties['fastq_file1']
+    fastq_file1_file_path = os.path.join('../Website/salmon_file_manager/uploads', fastq_file1.filename)
+    fastq_file2 = opties['fastq_file2']
+    fastq_file2_file_path = os.path.join('../Website/salmon_file_manager/uploads', fastq_file2.filename)
 
-    if not os.path.exists('../Website/uploads'):
-        os.makedirs('../Website/uploads')
-    uploaded_file.save(file_path)
+    if not os.path.exists('../Website/salmon_file_manager/uploads'):
+        os.makedirs('../Website/salmon_file_manager/uploads')
 
-    salmon_invoer = SalmonInvoer(file_path, uploaded_file)
+    fasta_file.save(fasta_file_path)
+    fastq_file1.save(fastq_file1_file_path)
+    fastq_file2.save(fastq_file2_file_path)
 
-    indexresult = salmon_invoer.run_index(file_path)
+    salmon_invoer = SalmonInvoer(fasta_file_path, fasta_file, fastq_file1_file_path, fastq_file2_file_path)
+
+    indexresult = salmon_invoer.run_index()
     if not indexresult['success']:
         return indexresult
 
-    quantresult = salmon_invoer.run_quant(file_path)
+    quantresult = salmon_invoer.run_quant()
     if not quantresult['success']:
         # Retourneer de error als kwantisatie niet werkt, omdat de value ('success') dan false is
         return quantresult

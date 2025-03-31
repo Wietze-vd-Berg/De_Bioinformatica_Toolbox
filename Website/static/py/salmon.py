@@ -34,7 +34,6 @@ class SalmonInvoer:
         """
         Voert de Salmon-indexering uit op het opgegeven bestand.
 
-        :param input_file_path: Het pad naar het bestand dat moet worden geïndexeerd.
         :return: Een dictionary met het resultaat van de indexering.
         """
         console_cmd = [
@@ -43,7 +42,7 @@ class SalmonInvoer:
             '-i', self.index_dir
         ]
         try:
-            subprocess.check_output(console_cmd, text=True)
+            subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
             return {'success': True}
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': e}
@@ -55,8 +54,9 @@ class SalmonInvoer:
 
         :return: Een dictionary met het resultaat van de kwantisatie.
         """
-        console_cmd = [
+        console_cmd_1 = [
             'salmon', 'quant',
+            '--quiet',
             '-i', self.index_dir,
             '-l', 'A',
             '-1', self.r1,
@@ -65,12 +65,13 @@ class SalmonInvoer:
         ]
 
         try:
-            output1 = subprocess.check_output(console_cmd, text=True)
+            output1 = subprocess.check_output(console_cmd_1, text=True)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
 
-        console_cmd = [
+        console_cmd_2 = [
             'salmon', 'quant',
+            '--quiet',
             '-i', self.index_dir,
             '-l', 'A',
             '-1', self.r2,
@@ -79,7 +80,7 @@ class SalmonInvoer:
         ]
 
         try:
-            output2 = subprocess.check_output(console_cmd, text=True)
+            output2 = subprocess.check_output(console_cmd_2, text=True)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
 
@@ -120,12 +121,15 @@ def salmon_handler(opties):
     fastq_file1.save(fastq_file1_file_path)
     fastq_file2.save(fastq_file2_file_path)
 
+    print(f'salmon __init__ met {fasta_file.filename}, {fastq_file1.filename}, {fastq_file2.filename}')
     salmon_invoer = SalmonInvoer(fasta_file_path, fasta_file, fastq_file1_file_path, fastq_file2_file_path)
 
+    print(f'salmon run_index met {fasta_file.filename}')
     indexresult = salmon_invoer.run_index()
     if not indexresult['success']:
         return indexresult
 
+    print(f'salmon run_quant met indexed {fasta_file.filename}, r1&r2 als {fastq_file1.filename}, {fastq_file2.filename}')
     quantresult = salmon_invoer.run_quant()
     if not quantresult['success']:
         # Retourneer de error als kwantisatie niet werkt, omdat de value ('success') dan false is

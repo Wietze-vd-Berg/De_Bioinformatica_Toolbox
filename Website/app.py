@@ -82,6 +82,9 @@ def salmon_invoer():
         # Voer de Salmon-analyse uit met de gegeven parameters
         quantresult = salmon_handler(kwargs)
 
+        if not quantresult['success']: # Error handling
+            return {str(quantresult['error'].replace('\n', '<br>'))}, 400 #returnd de error plus een 400 status code
+
         # Veronderstel dat quantresult de analysegegevens bevat die je nodig hebt voor de heatmap
         # Zorg ervoor dat quantresult de juiste vorm heeft (bijv. een 2D lijst of numpy array)
 

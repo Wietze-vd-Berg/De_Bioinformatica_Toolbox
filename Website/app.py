@@ -42,14 +42,11 @@ def salmon_invoer():
             "fasta_file": fasta_file
         })
 
-        # Verwerk de resultaten
-        if isinstance(quantresult, dict) and 'fastq1' in quantresult and 'fastq2' in quantresult:
-            data_fastq1 = quantresult['fastq1']
-            data_fastq2 = quantresult['fastq2']
-        else:
-            # Dummy data voor testdoeleinden
-            data_fastq1 = [{'Name': f'gen{i}', 'TPM': float(np.random.randint(10, 1000))} for i in range(10)]
-            data_fastq2 = [{'Name': f'gen{i}', 'TPM': float(np.random.randint(10, 1000))} for i in range(10)]
+        if not isinstance(quantresult, dict) or 'fastq1' not in quantresult or 'fastq2' not in quantresult:
+            return "Fout: De Salmon-analyse heeft geen geldige output opgeleverd.", 500
+
+        data_fastq1 = quantresult['fastq1']
+        data_fastq2 = quantresult['fastq2']
 
         # Genereer de staafgrafiek
         bar_chart_data = generate_bar_chart(data_fastq1, data_fastq2)
@@ -111,11 +108,16 @@ def generate_bar_chart(data_fastq1, data_fastq2):
     ax.bar(x - bar_width/2, values_fastq1, bar_width, label='FASTQ 1', color='salmon')
     ax.bar(x + bar_width/2, values_fastq2, bar_width, label='FASTQ 2', color='lightblue')
 
+    ax.set_xlabel('Genen')
     ax.set_ylabel('TPM Expressie')
     ax.set_title('TPM Expressie Vergelijking (Top 10)')
     ax.set_xticks(x)
     ax.set_xticklabels(labels, rotation=45, ha='right')
     ax.legend()
+
+    # Voeg een ondertitel toe met uitleg
+    plt.figtext(0.5, -0.1, "TPM-expressie van de top 10 genen op basis van RNA-sequentieanalyse.",
+                wrap=True, horizontalalignment='center', fontsize=10)
 
     img_io = io.BytesIO()
     plt.savefig(img_io, format='png', bbox_inches='tight')

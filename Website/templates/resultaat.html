@@ -1,31 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Hoofdsectie -->
     <div class="max-w-screen-lg mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-6">Analyse Resultaten</h1>
 
         <p class="text-lg mb-6 text-center">
             Hier zijn de resultaten van je Salmon-analyse op basis van het geüploade FASTA-bestand.
-            
         </p>
 
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-2xl font-semibold mb-4"><i class="fas fa-chart-bar text-[#FFA07A]"></i> Salmon Analyse</h2>
-            <p class="text-gray-700"></p>
             <ul>
-            {% if indexeddata %} <li>Geindexeerde data: {{ cb1 }}</li> {% endif %}
-            {% if addlibtype %} <li>Handmatig libtype: {{ cb2 }}</li> {% endif %}
-            {% if addmultiplefiles %} <li>Meerdere bestanden vergelijken: {{ cb3 }}</li> {% endif %}
-            {% if addgcbias %} <li>gcBias: {{ cb4 }}</li> {% endif %}
-            {% if addposbias %} <li>posBias: {{ cb5 }}</li> {% endif %}
-            {% if addseqbias %} <li>seqBias: {{ cb6 }}</li> {% endif %}
+                {% if indexeddata %} <li>Geindexeerde data: {{ indexeddata }}</li> {% endif %}
+                {% if addlibtype %} <li>Handmatig libtype: {{ addlibtype }}</li> {% endif %}
+                {% if addmultiplefiles %} <li>Meerdere bestanden vergelijken: {{ addmultiplefiles }}</li> {% endif %}
+                {% if addgcbias %} <li>gcBias: {{ addgcbias }}</li> {% endif %}
+                {% if addposbias %} <li>posBias: {{ addposbias }}</li> {% endif %}
+                {% if addseqbias %} <li>seqBias: {{ addseqbias }}</li> {% endif %}
             </ul>
             <span class="text-gray-500 italic">Analyse wordt nog verwerkt of er is geen data beschikbaar.</span>
         </div>
 
-        {% if result['success'] %} Succes yippie {% endif %}
-        {% if not result['success'] %} {{ result }} {% endif %}
-
+        {% if heatmap_data %}
+            <div class="text-center mt-6">
+                <img src="data:image/png;base64,{{ heatmap_data }}" alt="Heatmap" />
+            </div>
+        {% endif %}
 
         <div class="flex justify-center mt-6">
             <a href="{{ url_for('salmon_invoer') }}" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">

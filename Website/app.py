@@ -1,6 +1,40 @@
-from flask import Flask, render_template, request, url_for, redirect, send_from_directory
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+import io
+import base64
+from flask import Flask, render_template, request, send_from_directory
+from static.py.salmon import salmon_handler
 
 app = Flask(__name__)
+
+
+# Functie voor het genereren van een heatmap
+def generate_heatmap(analysis_data):
+    """
+    Genereer een heatmap op basis van de analysegegevens van Salmon.
+    """
+    # Hier verwerk je de daadwerkelijke analysegegevens (bijvoorbeeld 'analysis_data' moet een 2D lijst of numpy array zijn)
+    if isinstance(analysis_data, np.ndarray):  # Als de data een numpy array is
+        heatmap_data = analysis_data
+    else:
+        # Converteer andere soorten data naar een numpy array (bijv. van dict, lijst, etc.)
+        heatmap_data = np.array(analysis_data)  # Vervang deze lijn door je eigen conversielogica
+
+    # Maak de heatmap met matplotlib
+    fig, ax = plt.subplots(figsize=(6, 6))
+    cax = ax.imshow(heatmap_data, cmap='hot', interpolation='nearest')
+    fig.colorbar(cax)
+
+    # Sla de afbeelding op in geheugen in plaats van op schijf
+    img_io = io.BytesIO()
+    plt.savefig(img_io, format='png')
+    img_io.seek(0)
+
+    # Converteer de afbeelding naar een base64 string
+    heatmap_data = base64.b64encode(img_io.getvalue()).decode('utf-8')
+
+    return heatmap_data
 
 
 @app.route('/')
@@ -8,9 +42,6 @@ app = Flask(__name__)
 def index():
     """
     Rendert de indexpagina van de website.
-
-    :param: Geen parameters.
-    :return: De gerenderde 'index.html'-sjabloon met titel en actieve pagina.
     """
     return render_template('index.html', title='Home', active_page='index')
 
@@ -19,15 +50,8 @@ def index():
 def salmon_invoer():
     """
     Behandelt de Salmon invoerpagina en verwerkt formulierinzendingen.
-
-    Bij GET wordt de invoerpagina getoond. Bij POST worden checkbox-gegevens
-    verzameld en doorgestuurd naar de resultaatpagina.
-
-    :param: Geen directe parameters, maar gebruikt 'request' voor formulierdata.
-    :return: De gerenderde 'salmon_invoer.html' bij GET, of 'resultaat.html' bij POST.
     """
     if request.method == 'GET':
-
         extra_input = False  # Standaard geen extra invoerveld
 
         if "checkbox3" in request.form:
@@ -37,7 +61,8 @@ def salmon_invoer():
         else:
             print("Ik doe moeilijk en werk niet, loser!")
 
-        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer', extra_input_file=extra_input)
+        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer',
+                               extra_input_file=extra_input)
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
         kwargs = {
@@ -53,17 +78,33 @@ def salmon_invoer():
         if fasta_file:
             kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
 
-        # Render resultaatpagina met checkbox-gegevens
-        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', **kwargs)
+        # Voer de Salmon-analyse uit met de gegeven parameters
+        quantresult = salmon_handler(kwargs)
+
+        # Veronderstel dat quantresult de analysegegevens bevat die je nodig hebt voor de heatmap
+        # Zorg ervoor dat quantresult de juiste vorm heeft (bijv. een 2D lijst of numpy array)
+
+        # Gebruik hier de juiste gegevens van quantresult voor de heatmap
+        # Voorbeeld: neem aan dat quantresult een dictionary is en dat 'data' een numpy array bevat.
+        # Pas dit aan op basis van je werkelijke output van Salmon
+
+        if isinstance(quantresult, dict) and 'data' in quantresult:
+            analysis_data = quantresult['data']  # Vervang door de juiste sleutel van je resultaat
+        else:
+            analysis_data = np.random.rand(10, 10)  # Gebruik hier de echte data van Salmon
+
+        # Genereer de heatmap afbeelding met de werkelijke data
+        heatmap_data = generate_heatmap(analysis_data)
+
+        # Render de resultaatpagina met de heatmap
+        return render_template('resultaat.html', title='Resultaat', active_page='resultaat', heatmap_data=heatmap_data,
+                               **kwargs)
 
 
 @app.route('/uitleg')
 def uitleg():
     """
     Rendert de uitlegpagina.
-
-    :param: Geen parameters.
-    :return: De gerenderde 'uitleg.html'-sjabloon met titel en actieve pagina.
     """
     return render_template('uitleg.html', title='Uitleg', active_page='uitleg')
 
@@ -72,9 +113,6 @@ def uitleg():
 def serve_json(filename):
     """
     Serveert bestanden uit de 'voorbeeld_data'-map.
-
-    :param filename: De naam van het bestand dat geserveerd moet worden.
-    :return: Het gevraagde bestand uit de 'voorbeeld_data'-directory.
     """
     return send_from_directory('voorbeeld_data', filename)
 
@@ -83,9 +121,6 @@ def serve_json(filename):
 def contact():
     """
     Rendert de contactpagina.
-
-    :param: Geen parameters.
-    :return: De gerenderde 'contact.html'-sjabloon met titel en actieve pagina.
     """
     return render_template('contact.html', title='Contact', active_page='contact')
 
@@ -94,9 +129,6 @@ def contact():
 def page_not_found(e):
     """
     Behandelt 404-fouten en toont een aangepaste foutpagina.
-
-    :param e: De fout die de 404 heeft veroorzaakt.
-    :return: De gerenderde 'error_handling.html'-sjabloon met foutinformatie.
     """
     return render_template('error_handling.html', title='Page not found', active_page='error_handling', error=e)
 

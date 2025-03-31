@@ -42,6 +42,9 @@ def generate_heatmap(analysis_data):
 def index():
     """
     Rendert de indexpagina van de website.
+
+    :param: Geen parameters.
+    :return: De gerenderde 'index.html'-sjabloon met titel en actieve pagina.
     """
     return render_template('index.html', title='Home', active_page='index')
 
@@ -50,12 +53,16 @@ def index():
 def salmon_invoer():
     """
     Behandelt de Salmon invoerpagina en verwerkt formulierinzendingen.
+
+    Bij GET wordt de invoerpagina getoond. Bij POST worden checkbox-gegevens
+    verzameld en doorgestuurd naar de resultaatpagina.
+
+    :param: Geen directe parameters, maar gebruikt 'request' voor formulierdata.
+    :return: De gerenderde 'salmon_invoer.html' bij GET, of 'resultaat.html' bij POST.
     """
     if request.method == 'GET':
-        extra_input = False  # Standaard geen extra invoerveld
+        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
 
-        return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer',
-                               extra_input_file=extra_input)
     elif request.method == 'POST':
         # Verkrijg checkbox-waarden uit het formulier
         kwargs = {

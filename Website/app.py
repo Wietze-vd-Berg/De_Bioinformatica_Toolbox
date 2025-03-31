@@ -126,12 +126,7 @@ def contact():
     return render_template('contact.html', title='Contact', active_page='contact')
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    """
-    Behandelt 404-fouten en toont een aangepaste foutpagina.
-    """
-    return render_template('error_handling.html', title='Page not found', active_page='error_handling', error=e)
+
 
 
 if __name__ == '__main__':

@@ -28,22 +28,35 @@ def salmon_invoer():
         return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
 
     elif request.method == 'POST':
-        # Verkrijg de geüploade bestanden
-        fastq_file1 = request.files.get("fastq-file1")
-        fastq_file2 = request.files.get("fastq-file2")
+        # Verkrijg checkbox-waarden uit het formulier
+        kwargs = {}
+
         fasta_file = request.files.get("fasta-file")
+        if fasta_file:
+            kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
 
-        if not (fastq_file1 and fastq_file2 and fasta_file):
-            return "Fout: Zorg ervoor dat beide FASTQ-bestanden en het FASTA-bestand zijn geüpload.", 400
+        # Voer de Salmon-analyse uit met de gegeven parameters
+        quantresult = salmon_handler(kwargs)
+        fastq_file1 = request.files.get("fastq-file1")
+        if fastq_file1:
+            kwargs["fastq_file1"] = fastq_file1
 
-        # Voer Salmon-analyse uit
-        quantresult = salmon_handler({
-            "fastq_files": [fastq_file1, fastq_file2],
-            "fasta_file": fasta_file
-        })
+        fastq_file2 = request.files.get("fastq-file2")
+        if fastq_file2:
+            kwargs["fastq_file2"] = fastq_file2
 
-        if not isinstance(quantresult, dict) or 'fastq1' not in quantresult or 'fastq2' not in quantresult:
-            return "Fout: De Salmon-analyse heeft geen geldige output opgeleverd.", 500
+        # Voer de Salmon-analyse uit met de gegeven parameters
+        quantresult = salmon_handler(kwargs)
+
+        if not quantresult['success']: # Error handling
+            return str(quantresult['error'].replace('\n', '<br>')), 400 #returnd de error plus een 400 status code
+
+        # Veronderstel dat quantresult de analysegegevens bevat die je nodig hebt voor de heatmap
+        # Zorg ervoor dat quantresult de juiste vorm heeft (bijv. een 2D lijst of numpy array)
+
+        # Gebruik hier de juiste gegevens van quantresult voor de heatmap
+        # Voorbeeld: neem aan dat quantresult een dictionary is en dat 'data' een numpy array bevat.
+        # Pas dit aan op basis van je werkelijke output van Salmon
 
         data_fastq1 = quantresult['fastq1']
         data_fastq2 = quantresult['fastq2']
@@ -79,12 +92,7 @@ def contact():
     return render_template('contact.html', title='Contact', active_page='contact')
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    """
-    Behandelt 404-fouten en toont een aangepaste foutpagina.
-    """
-    return render_template('error_handling.html', title='Page not found', active_page='error_handling', error=e)
+
 
 
 def generate_bar_chart(data_fastq1, data_fastq2):

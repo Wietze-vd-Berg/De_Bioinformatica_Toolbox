@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: flask-app
+    env: python
+    plan: free
+    buildCommand: "pip install -r Website/requirements.txt"
+    startCommand: "gunicorn app:app"
+    workingDir: Website

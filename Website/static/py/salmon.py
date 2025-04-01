@@ -16,13 +16,10 @@ class SalmonInvoer:
         self.r1 = r1
         self.r2 = r2
 
-        self.output_dir_r1 = f'../Website/salmon_file_manager/output/{input_file.filename}/r1'
-        self.output_dir_r2 = f'../Website/salmon_file_manager/output/{input_file.filename}/r2'
+        self.output_dir = f'../Website/salmon_file_manager/output/{input_file.filename}'
 
-        if not os.path.exists(self.output_dir_r1):
-            os.makedirs(self.output_dir_r1)
-        if not os.path.exists(self.output_dir_r2):
-            os.makedirs(self.output_dir_r2)
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
         # waneer output map niet bestaat maakt hij een aan
 
         self.index_dir = f'../Website/salmon_file_manager/index/{input_file.filename}'
@@ -42,7 +39,7 @@ class SalmonInvoer:
             '-i', self.index_dir
         ]
         try:
-            subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
+            subprocess.check_output(console_cmd, text=True)
             return {'success': True}
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': e}
@@ -54,50 +51,44 @@ class SalmonInvoer:
 
         :return: Een dictionary met het resultaat van de kwantisatie.
         """
-        console_cmd_1 = [
+        console_cmd = [
             'salmon', 'quant',
             '--quiet',
             '-i', self.index_dir,
             '-l', 'A',
             '-1', self.r1,
             '-2', self.r2,
-            '-o', self.output_dir_r1,
+            '-o', self.output_dir,
         ]
 
         try:
-            output1 = subprocess.check_output(console_cmd_1, text=True)
+            output = subprocess.run(console_cmd)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
 
-        console_cmd_2 = [
-            'salmon', 'quant',
-            '--quiet',
-            '-i', self.index_dir,
-            '-l', 'A',
-            '-1', self.r2,
-            '-2', self.r1,
-            '-o', self.output_dir_r2,
-        ]
-
-        try:
-            output2 = subprocess.check_output(console_cmd_2, text=True)
-        except subprocess.CalledProcessError as e:
-            return {'success': False, 'error': str(e)}
-
-        return {'success': True, 'output1': output1, 'output2': output2}
+        return {'success': True, 'output': output}
 
     def get_result(self):
-        """
-        Haalt het resultaat op van de Salmon-kwantisatie.
-
-        :return: Het resultaat van de kwantisatie, of een foutmelding als het bestand niet wordt gevonden.
-        """
-        result_file = os.path.join(self.output_dir_r1, 'quant.sf')
+        result_file = os.path.join(self.output_dir, 'quant.sf')
         if os.path.exists(result_file):
-            with open(result_file, 'r') as f:
-                return {'success': True, 'result': f.readlines()}
+            try:
+                with open(result_file, 'r') as f:
+                    lines = f.readlines()
+
+                header = lines[0].strip().split('\t')
+                result_list = []
+
+                for line in lines[1:]:
+                    values = line.strip().split('\t')
+                    entry = dict(zip(header, values))
+                    entry['TPM'] = float(entry['TPM'])  # Zorg dat TPM numeriek is
+                    result_list.append(entry)
+
+                return {'success': True, 'result': result_list}
+            except Exception as e:
+                return {'success': False, 'error': f'Fout bij inlezen quant.sf: {e}'}
         else:
-            return {'success': False, 'error': 'File not found'}
+            return {'success': False, 'error': 'quant.sf niet gevonden'}
 
 
 def salmon_handler(opties):

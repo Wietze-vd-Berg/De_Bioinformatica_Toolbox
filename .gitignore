@@ -3,7 +3,7 @@ Website/__pycache__/
 Website/static/py/__pycache__/
 Website/index
 Website/output
-Website/uploads
+Website/upload
 Website/salmon_file_manager
 voorbeeld_data/
 .venv/

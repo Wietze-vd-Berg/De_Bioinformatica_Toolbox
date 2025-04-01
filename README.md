@@ -17,6 +17,9 @@ They can then compare the RNA samples and explore differences. The tool generate
 ## Requirements
 Machine with python 3.7 or higher <br>
 This guide is for Linux operating systems.
+Libraries required: matplotlib, numpy, Flask, Salmon handler (for running Salmon analysis)
+Install with pip in the terminal.
+
 
 ## Installation
 ### Part 1: Miniconda

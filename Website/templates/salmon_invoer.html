@@ -28,3 +28,20 @@
         </form>
     </div>
 {% endblock %}
+
+<!--
+https://salmon.readthedocs.io/en/latest/salmon.html
+
+download de voorbeeld data:
+wget ftp://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+gunzip Homo_sapiens.GRCh38.cdna.all.fa.gz
+
+Je kan nu je transcriptoom indexen met de onderstaande command:
+salmon index -t (naam).fa -i salmon_index
+
+Als dit is uitgevoerd kan je de salmon quant command uitvoeren:
+salmon quant -i salmon_index -l A -r (naam).fa -o quant_output
+
+Je kan nu de resultaten bekijken! quant.sf zijn de resultaten :) :
+cat quant_output/quant.sf | head
+-->

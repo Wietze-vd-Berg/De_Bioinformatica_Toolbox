@@ -5,22 +5,21 @@
         <h1 class="text-3xl font-bold text-center mb-6">Analyse Resultaten</h1>
 
         <p class="text-lg mb-6 text-center">
-            Hier zijn de resultaten van je Salmon-analyse op basis van de geüploade bestanden.
-            
+            Hier zijn de resultaten van je Salmon-analyse op basis van de geüploade bestanden!
         </p>
 
         <div class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-2xl font-semibold mb-4"><i class="fas fa-chart-bar text-[#FFA07A]"></i> Salmon Analyse</h2>
-            <p class="text-gray-700"></p>
-            <ul>
-            {% if indexeddata %} <li>Geindexeerde data: {{ cb1 }}</li> {% endif %}
-            {% if addlibtype %} <li>Handmatig libtype: {{ cb2 }}</li> {% endif %}
-            {% if addmultiplefiles %} <li>Meerdere bestanden vergelijken: {{ cb3 }}</li> {% endif %}
-            {% if addgcbias %} <li>gcBias: {{ cb4 }}</li> {% endif %}
-            {% if addposbias %} <li>posBias: {{ cb5 }}</li> {% endif %}
-            {% if addseqbias %} <li>seqBias: {{ cb6 }}</li> {% endif %}
-            </ul>
-            <span class="text-gray-500 italic">Analyse wordt nog verwerkt of er is geen data beschikbaar.</span>
+            <h2 class="text-2xl font-semibold mb-4">
+                <i class="fas fa-chart-bar text-[#FFA07A]"></i> TPM Expressie Vergelijking (Top 10)
+            </h2>
+            <!-- Staafgrafiek -->
+            {% if bar_chart_data %}
+                <div class="flex justify-center">
+                    <img src="data:image/png;base64,{{ bar_chart_data }}" alt="Staafgrafiek" class="max-w-full h-auto">
+                </div>
+            {% else %}
+                <span class="text-gray-500 italic">Analyse wordt nog verwerkt of er is geen data beschikbaar.</span>
+            {% endif %}
         </div>
 
         <div class="flex justify-center mt-6">

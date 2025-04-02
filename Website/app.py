@@ -72,8 +72,14 @@ def salmon_invoer():
         # Genereer de staafgrafiek
         bar_chart_data = generate_bar_chart(data_fastq1)
 
-        return render_template('resultaat.html', title='Resultaat', active_page='resultaat',
-                               bar_chart_data=bar_chart_data, kwargs=kwargs)
+        return render_template(
+              'resultaat.html',
+                                title='Resultaat',
+                                active_page='resultaat',
+                                bar_chart_data=bar_chart_data,
+                                kwargs=kwargs,
+                                fasta_filename=fasta_file.filename
+                              )
 
 
 @app.route('/uitleg')
@@ -91,6 +97,16 @@ def serve_json(filename):
     """
     return send_from_directory('voorbeeld_data', filename)
 
+@app.route('/download/<fasta_filename>')
+def download_quant_file(fasta_filename):
+    folder = os.path.join('salmon_file_manager', 'output', fasta_filename)
+
+    file_path = os.path.join(folder, 'quant.sf')
+    print("Zoekpad:", file_path)
+    if not os.path.exists(file_path):
+        return f'Bestand niet gevonden', 404
+
+    return send_from_directory(folder, 'quant.sf', as_attachment=True)
 
 @app.route('/contact')
 def contact():

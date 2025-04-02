@@ -16,12 +16,6 @@ def index():
     """
     return render_template('index.html', title='Home', active_page='index')
 
-@app.route('/laden')
-def laden():
-    """
-    Rendert een laadpagina tussen de invoer en het resultaat
-    """
-    return render_template('laden.html', title="Salmon is bezig.....")
 
 @app.route('/salmon_invoer', methods=['GET', 'POST'])
 def salmon_invoer():
@@ -40,18 +34,25 @@ def salmon_invoer():
         fasta_file = request.files.get("fasta-file")
         fastq_file1 = request.files.get("fastq-file1")
         fastq_file2 = request.files.get("fastq-file2")
+        seqBias = request.form.get("seqBias")
+        posBias = request.form.get('posBias')
+        gcBias = request.form.get('gcBias')
 
         if not fasta_file or not fastq_file1 or not fastq_file2:
-            return 'error-bericht'
+            return 'error-bericht', 400
 
-        if fasta_file:
-            kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
+        kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
+        kwargs["fastq_file1"] = fastq_file1
+        kwargs["fastq_file2"] = fastq_file2
 
-        if fastq_file1:
-            kwargs["fastq_file1"] = fastq_file1
+        if seqBias: kwargs['seqBias'] = True
+        else: kwargs['seqBias'] = False
 
-        if fastq_file2:
-            kwargs["fastq_file2"] = fastq_file2
+        if posBias: kwargs['posBias'] = True
+        else: kwargs['posBias'] = False
+
+        if gcBias: kwargs['gcBias'] = True
+        else: kwargs['gcBias'] = False
 
         # Voer de Salmon-analyse uit met de gegeven parameters
         quantresult = salmon_handler(kwargs)
@@ -69,17 +70,16 @@ def salmon_invoer():
         data_fastq1 = quantresult['result']
 
         # Genereer de staafgrafiek
-        session['bar_chart_data'] = generate_bar_chart(quantresult['result'])
+        bar_chart_data = generate_bar_chart(data_fastq1)
 
-        return redirect(url_for('loading'))
-
-@app.route('/resultaat')
-def resultaat():
-    """
-    Laadt de resultatenpagina met resultaten van salmon.
-    """
-    bar_chart_data = session.get('bar_chart_data', None)
-    return render_template('resultaat.html', title='Resultaat', active_page='resultaat', bar_chart_data=bar_chart_data)
+        return render_template(
+              'resultaat.html',
+                                title='Resultaat',
+                                active_page='resultaat',
+                                bar_chart_data=bar_chart_data,
+                                kwargs=kwargs,
+                                fasta_filename=fasta_file.filename
+                              )
 
 
 @app.route('/uitleg')
@@ -97,6 +97,16 @@ def serve_json(filename):
     """
     return send_from_directory('voorbeeld_data', filename)
 
+@app.route('/download/<fasta_filename>')
+def download_quant_file(fasta_filename):
+    folder = os.path.join('salmon_file_manager', 'output', fasta_filename)
+
+    file_path = os.path.join(folder, 'quant.sf')
+    print("Zoekpad:", file_path)
+    if not os.path.exists(file_path):
+        return f'Bestand niet gevonden', 404
+
+    return send_from_directory(folder, 'quant.sf', as_attachment=True)
 
 @app.route('/contact')
 def contact():
@@ -104,6 +114,17 @@ def contact():
     Rendert de contactpagina.
     """
     return render_template('contact.html', title='Contact', active_page='contact')
+
+
+@app.route("/test-salmon")
+def test_salmon():
+    import subprocess
+    try:
+        output = subprocess.check_output(["salmon", "--version"], text=True)
+        return f"<pre>{output}</pre>"
+    except FileNotFoundError:
+        return "Salmon niet gevonden."
+
 
 
 def generate_bar_chart(data_fastq1):

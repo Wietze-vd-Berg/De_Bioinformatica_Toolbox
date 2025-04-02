@@ -22,10 +22,26 @@
             {% endif %}
         </div>
 
-        <div class="flex justify-center mt-6">
-            <a href="{{ url_for('salmon_invoer') }}" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">
-                <i class="fas fa-arrow-left"></i> Terug naar Invoer
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <!-- Geeft aan welke opties zijn aangevinkt -->
+            {% if kwargs.seqBias %}seqBias enabled<br>{% endif %}
+            {% if kwargs.gcBias %}gcBias enabled<br>{% endif %}
+            {% if kwargs.posBias %}posBias enabled{% endif %}
+
+            <br>
+
+            <!-- Download voor quant.sf -->
+            <a href="download/{{ kwargs.fasta_file.filename}}" class="btn bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">
+                <i class="download-button"></i> Download quant.sf
             </a>
+        </div>
+
+        <div class="flex justify-center mt-6">
+            <a href="{{ url_for('download_quant_file', fasta_filename=fasta_filename) }}"
+                class="btn bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">
+                <i class="download-button"></i> Download quant.sf
+            </a>
+
         </div>
     </div>
 {% endblock %}

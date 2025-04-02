@@ -3,7 +3,7 @@ import uuid, threading
 
 from flask import Flask, render_template, request, send_from_directory, redirect, url_for, session, jsonify
 
-from Website.static.py import barchart
+from modules import barchart
 from static.py.salmon import salmon_handler
 
 # threading variabels
@@ -77,7 +77,7 @@ def salmon_invoer():
         task_id = str(uuid.uuid4())
         tasks[task_id] = "processing"
 
-        threading.Thread(target=start_salmon_verwerking, args=(kwargs, fasta_file.filename, task_id)).start()
+        threading.Thread(target=start_salmon_verwerking, args=(kwargs, task_id)).start()
 
         return redirect(url_for("verwerken", task_id=task_id))
 

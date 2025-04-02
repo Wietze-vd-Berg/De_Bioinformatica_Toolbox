@@ -1,26 +1,31 @@
 FROM python:3.10-slim
 
-# Install system dependencies
+# Voeg salmon toe aan PATH
+ENV PATH="/usr/local/bin:$PATH"
+
+# Systeemafhankelijkheden
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Install salmon (v1.10.2 als voorbeeld)
+# Download en installeer salmon
 RUN curl -L https://github.com/COMBINE-lab/salmon/releases/download/v1.10.2/salmon-1.10.2_linux_x86_64.tar.gz | tar xz && \
-    mv salmon-1.10.2_linux_x86_64/salmon /usr/local/bin && \
+    cp salmon-1.10.2_linux_x86_64/salmon /usr/local/bin/salmon && \
+    chmod +x /usr/local/bin/salmon && \
     rm -rf salmon-1.10.2_linux_x86_64
 
-# Set work directory
+# Werkdirectory
 WORKDIR /app
 
-# Copy dependencies & install
+# Installeer Python-dependencies
 COPY Website/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Copy alle bestanden uit je project
 COPY Website/ .
 
-# Run the app
+# Start Flask-app met gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
+

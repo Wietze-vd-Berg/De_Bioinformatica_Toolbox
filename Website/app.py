@@ -5,8 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 import base64
-from flask import Flask, render_template, request, send_from_directory, redirect, url_for, session
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for, session, jsonify
 from static.py.salmon import salmon_handler
+import uuid, threading
+
+# threading variabels
+tasks = {}
+results = {}
 
 app = Flask(__name__)
 
@@ -30,7 +35,7 @@ def salmon_invoer():
         return render_template('salmon_invoer.html', title='Salmon Invoer', active_page='salmon_invoer')
 
     elif request.method == 'POST':
-        # Verkrijg checkbox-waarden uit het formulier
+        # Verkrijg waardes uit het formulier
         kwargs = {}
 
         fasta_file = request.files.get("fasta-file")
@@ -57,31 +62,41 @@ def salmon_invoer():
         else: kwargs['gcBias'] = False
 
         # Voer de Salmon-analyse uit met de gegeven parameters
-        quantresult = salmon_handler(kwargs)
 
-        if not quantresult['success']: # Error handling
-            return str(quantresult['error']).replace('\n', '<br>'), 400 #returnd de error plus een 400 status code
+        task_id = str(uuid.uuid4())
+        tasks[task_id] = "processing"
 
-        # Veronderstel dat quantresult de analysegegevens bevat die je nodig hebt voor de heatmap
-        # Zorg ervoor dat quantresult de juiste vorm heeft (bijv. een 2D lijst of numpy array)
+        threading.Thread(target=start_salmon_verwerking, args=(kwargs, fasta_file.filename, task_id)).start()
 
-        # Gebruik hier de juiste gegevens van quantresult voor de heatmap
-        # Voorbeeld: neem aan dat quantresult een dictionary is en dat 'data' een numpy array bevat.
-        # Pas dit aan op basis van je werkelijke output van Salmon
+        return redirect(url_for("verwerken", task_id=task_id))
 
-        data_fastq1 = quantresult['result']
+@app.route("/verwerken/<task_id>")
+def verwerken(task_id):
+    return render_template("verwerken.html", task_id=task_id)
 
-        # Genereer de staafgrafiek
-        bar_chart_data = generate_bar_chart(data_fastq1)
+@app.route("/status/<task_id>")
+def status(task_id):
+    return jsonify({"status": tasks.get(task_id, "onbekend")})
 
-        return render_template(
-              'resultaat.html',
-                                title='Resultaat',
-                                active_page='resultaat',
-                                bar_chart_data=bar_chart_data,
-                                kwargs=kwargs,
-                                fasta_filename=fasta_file.filename
-                              )
+@app.route("/resultaat/<task_id>")
+def resultaat(task_id):
+    result = results.get(task_id)
+    if not result:
+        return "Resultaat niet gevonden", 404
+    if not result['success']:
+        return f"Fout tijdens verwerking: {result['error']}", 400
+
+    bar_chart_data = generate_bar_chart(result['result'])
+
+    return render_template(
+        'resultaat.html',
+        title='Resultaat',
+        active_page='resultaat',
+        bar_chart_data=bar_chart_data,
+        kwargs=result['kwargs'],
+        fasta_filename=result['fasta_filename']
+    )
+
 
 
 @app.route('/uitleg')
@@ -165,6 +180,25 @@ def generate_bar_chart(data_fastq1):
     bar_chart_data = base64.b64encode(img_io.getvalue()).decode('utf-8')
 
     return bar_chart_data
+
+def start_salmon_verwerking(kwargs, fasta_filename, task_id):
+    try:
+        quantresult = salmon_handler(kwargs)
+        if quantresult['success']:
+            results[task_id] = {
+                "success": True,
+                "result": quantresult['result'],
+                "kwargs": kwargs,
+                "fasta_filename": fasta_filename
+            }
+            tasks[task_id] = "done"
+        else:
+            results[task_id] = quantresult
+            tasks[task_id] = "error"
+    except Exception as e:
+        results[task_id] = {"success": False, "error": str(e)}
+        tasks[task_id] = "error"
+
 
 
 if __name__ == '__main__':

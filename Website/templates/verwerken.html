@@ -1,0 +1,22 @@
+<h2>Je bestand wordt verwerkt...</h2>
+<p>Even geduld aub. De verwerking duurt een paar minuten.</p>
+
+<script>
+  const taskId = "{{ task_id }}";
+
+  function checkStatus() {
+    fetch("/status/" + taskId)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "done") {
+          window.location.href = "/resultaat/" + taskId;
+        } else if (data.status === "error") {
+          document.body.innerHTML = "<h2>Er ging iets mis tijdens de verwerking.</h2>";
+        } else {
+          setTimeout(checkStatus, 3000);
+        }
+      });
+  }
+
+  checkStatus();
+</script>

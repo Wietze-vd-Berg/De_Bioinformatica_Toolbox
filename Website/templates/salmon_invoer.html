@@ -1,34 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Hoofdsectie -->
     <div class="max-w-screen-lg mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-6">Salmon invoer</h1>
-        <p class="text-lg mb-4">
+        <p class="text-lg mb-4"></p>
 
-        </p>
-
-        <!-- Bestandsinvoer sectie -->
         <form action="" method="POST" enctype="multipart/form-data" class="space-y-4">
             <div>
                 <label for="fasta-file" class="block text-lg font-semibold mb-2">Upload een FASTA-bestand</label>
-<<<<<<< HEAD
-                <input type="file" id="fasta-file" name="fasta-file" accept=".fasta" class="border border-gray-300 p-2 w-full rounded-md">
-=======
                 <input type="file" id="fasta-file" name="fasta-file" accept=".fasta, .fas, .fa" class="border border-gray-300 p-2 w-full rounded-md">
->>>>>>> ff70a7c39cf108b897938b75e985c1af3c6ff7e1
-                <p> <input type="checkbox" name="checkbox1" value="checked"> Data is al geindexeerd
-                <input type="checkbox" name="checkbox2" value="checked"> Handmatig libtype meegeven
-                <input type="checkbox" name="checkbox3" value="checked"> Meerdere bestanden vergelijken </p>
-                <p> <input type="checkbox" name="checkbox4" value="checked"> gcBias inschakelen
-                <input type="checkbox" name="checkbox5" value="checked"> posBias inschakelen
-                <input type="checkbox" name="checkbox6" value="checked"> seqBias inschakelen </p>
             </div>
 
-            <h1> {{ extra_input_file }} </h1>
-            {% if extra_input_file == True %}
-            <label for="extra-file" class="block text-lg font-semibold mb-2">Upload een extra bestand</label>
-            <input type="file" id="extra-file" name="extra-file" accept=".fasta"><br><br>
-            {% endif %}
+            <div>
+                <label for="fastq-file1" class="block text-lg font-semibold mb-2">Upload het eerste FASTQ-bestand</label>
+                <input type="file" id="fastq-file1" name="fastq-file1" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
+            </div>
+
+            <div>
+                <label for="fastq-file2" class="block text-lg font-semibold mb-2">Upload het tweede FASTQ-bestand</label>
+                <input type="file" id="fastq-file2" name="fastq-file2" accept=".fastq, .fq" class="border border-gray-300 p-2 w-full rounded-md">
+            </div>
 
             <div class="flex justify-center">
                 <button type="submit" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">
@@ -38,3 +28,20 @@
         </form>
     </div>
 {% endblock %}
+
+<!--
+https://salmon.readthedocs.io/en/latest/salmon.html
+
+download de voorbeeld data:
+wget ftp://ftp.ensembl.org/pub/release-110/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz
+gunzip Homo_sapiens.GRCh38.cdna.all.fa.gz
+
+Je kan nu je transcriptoom indexen met de onderstaande command:
+salmon index -t (naam).fa -i salmon_index
+
+Als dit is uitgevoerd kan je de salmon quant command uitvoeren:
+salmon quant -i salmon_index -l A -r (naam).fa -o quant_output
+
+Je kan nu de resultaten bekijken! quant.sf zijn de resultaten :) :
+cat quant_output/quant.sf | head
+-->

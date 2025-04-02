@@ -39,7 +39,7 @@ class SalmonInvoer:
             '-i', self.index_dir
         ]
         try:
-            subprocess.check_output(console_cmd, text=True)
+            subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             return {'success': True}
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': e}
@@ -60,13 +60,12 @@ class SalmonInvoer:
             '-2', self.r2,
             '-o', self.output_dir,
         ]
-
         if opties['gcBias']: console_cmd.append('--gcBias')
-        if opties['seqBias']: console_cmd.append('-seqBias')
-        if opties['posBias']: console_cmd.append('-posBias')
+        if opties['seqBias']: console_cmd.append('--seqBias')
+        if opties['posBias']: console_cmd.append('--posBias')
 
         try:
-            output = subprocess.run(console_cmd)
+            output = subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
 

@@ -34,22 +34,25 @@ def salmon_invoer():
         fasta_file = request.files.get("fasta-file")
         fastq_file1 = request.files.get("fastq-file1")
         fastq_file2 = request.files.get("fastq-file2")
+        seqBias = request.form.get("seqBias")
+        posBias = request.form.get('posBias')
+        gcBias = request.form.get('gcBias')
 
         if not fasta_file or not fastq_file1 or not fastq_file2:
-            return 'error-bericht'
+            return 'error-bericht', 400
 
-        if fasta_file:
-            kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
+        kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
+        kwargs["fastq_file1"] = fastq_file1
+        kwargs["fastq_file2"] = fastq_file2
 
-        if fastq_file1:
-            kwargs["fastq_file1"] = fastq_file1
+        if seqBias: kwargs['seqBias'] = True
+        else: kwargs['seqBias'] = False
 
-        if fastq_file2:
-            kwargs["fastq_file2"] = fastq_file2
+        if posBias: kwargs['posBias'] = True
+        else: kwargs['posBias'] = False
 
-        kwargs['seqBias'] = bool(request.files.get('seqBias'))
-        kwargs['gcBias'] = bool(request.files.get('gcBias'))
-        kwargs['posBias'] = bool(request.files.get('posBias'))
+        if gcBias: kwargs['gcBias'] = True
+        else: kwargs['gcBias'] = False
 
         # Voer de Salmon-analyse uit met de gegeven parameters
         quantresult = salmon_handler(kwargs)
@@ -70,7 +73,7 @@ def salmon_invoer():
         bar_chart_data = generate_bar_chart(data_fastq1)
 
         return render_template('resultaat.html', title='Resultaat', active_page='resultaat',
-                               bar_chart_data=bar_chart_data)
+                               bar_chart_data=bar_chart_data, kwargs=kwargs)
 
 
 @app.route('/uitleg')

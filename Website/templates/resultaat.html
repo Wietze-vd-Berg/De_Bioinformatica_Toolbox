@@ -22,6 +22,14 @@
             {% endif %}
         </div>
 
+        {% if kwargs %}
+        <div class="bg-white shadow-md rounded-lg p-6">
+            {% if kwargs.seqBias %}seqBias enabled<br>{% endif %}
+            {% if kwargs.gcBias %}gcBias enabled<br>{% endif %}
+            {% if kwargs.posBias %}posBias enabled{% endif %}
+        </div>
+        {% endif %}
+
         <div class="flex justify-center mt-6">
             <a href="{{ url_for('salmon_invoer') }}" class="bg-[#FFA07A] text-white px-6 py-2 rounded-md text-lg hover:bg-[#FF8C69]">
                 <i class="fas fa-arrow-left"></i> Terug naar Invoer

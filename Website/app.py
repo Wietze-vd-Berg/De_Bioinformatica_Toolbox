@@ -97,6 +97,14 @@ def contact():
     return render_template('contact.html', title='Contact', active_page='contact')
 
 
+@app.route("/test-salmon")
+def test_salmon():
+    import subprocess
+    try:
+        output = subprocess.check_output(["salmon", "--version"], text=True)
+        return f"<pre>{output}</pre>"
+    except FileNotFoundError:
+        return "Salmon niet gevonden."
 
 
 

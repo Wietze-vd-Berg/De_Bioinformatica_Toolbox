@@ -5,27 +5,15 @@ import subprocess
 class SalmonInvoer:
 #Classes die verantwoordelijk is voor het uitvoeren van Salmon-indexering en kwantisatie
 
-    def __init__(self, index_path, input_file, r1, r2):
-        """
-        Initialiseert de klassenvariabelen voor indexeren en kwantiseren.
-
-        :param index_path: Het pad naar de indexbestanden voor Salmon.
-        :param input_file: Het bestand dat geüpload is voor verwerking.
-        """
+    def __init__(self, index_path, fasta_filename, r1_path, r2_path):
         self.input_file_path = index_path
-        self.r1 = r1
-        self.r2 = r2
+        self.r1 = r1_path
+        self.r2 = r2_path
+        self.output_dir = f'../Website/salmon_file_manager/output/{fasta_filename}'
+        self.index_dir = f'../Website/salmon_file_manager/index/{fasta_filename}'
 
-        self.output_dir = f'../Website/salmon_file_manager/output/{input_file.filename}'
-
-        if not os.path.exists(self.output_dir):
-            os.makedirs(self.output_dir)
-        # waneer output map niet bestaat maakt hij een aan
-
-        self.index_dir = f'../Website/salmon_file_manager/index/{input_file.filename}'
-
-        if not os.path.exists(self.index_dir):
-            os.makedirs(self.index_dir)
+        os.makedirs(self.output_dir, exist_ok=True)
+        os.makedirs(self.index_dir, exist_ok=True)
 
     def run_index(self):
         """
@@ -95,39 +83,22 @@ class SalmonInvoer:
 
 
 def salmon_handler(opties):
-    """
-    Verwerkt de Salmon-analyse met de gegeven opties.
+    fasta_file_path = opties['fasta_file_path']
+    fastq_file1_path = opties['fastq_file1_path']
+    fastq_file2_path = opties['fastq_file2_path']
 
-    :param opties: De checkboxes die in de SalmonInvoer-klasse worden aangevinkt als kwargs.
-    :return: Het resultaat van de Salmon-analyse of een foutmelding.
-    """
-    fasta_file = opties['fasta_file']
-    fasta_file_path = os.path.join('../Website/salmon_file_manager/uploads', fasta_file.filename)
-    fastq_file1 = opties['fastq_file1']
-    fastq_file1_file_path = os.path.join('../Website/salmon_file_manager/uploads', fastq_file1.filename)
-    fastq_file2 = opties['fastq_file2']
-    fastq_file2_file_path = os.path.join('../Website/salmon_file_manager/uploads', fastq_file2.filename)
+    filename_only = os.path.basename(fasta_file_path)
 
-    if not os.path.exists('../Website/salmon_file_manager/uploads'):
-        os.makedirs('../Website/salmon_file_manager/uploads')
+    salmon_invoer = SalmonInvoer(fasta_file_path, filename_only, fastq_file1_path, fastq_file2_path)
 
-    fasta_file.save(fasta_file_path)
-    fastq_file1.save(fastq_file1_file_path)
-    fastq_file2.save(fastq_file2_file_path)
-
-    print(f'salmon __init__ met {fasta_file.filename}, {fastq_file1.filename}, {fastq_file2.filename}')
-    salmon_invoer = SalmonInvoer(fasta_file_path, fasta_file, fastq_file1_file_path, fastq_file2_file_path)
-
-    print(f'salmon run_index met {fasta_file.filename}')
     indexresult = salmon_invoer.run_index()
     if not indexresult['success']:
         return indexresult
 
-    print(f'salmon run_quant met indexed {fasta_file.filename}, r1&r2 als {fastq_file1.filename}, {fastq_file2.filename}')
     quantresult = salmon_invoer.run_quant(opties)
     if not quantresult['success']:
-        # Retourneer de error als kwantisatie niet werkt, omdat de value ('success') dan false is
         return quantresult
 
     result = salmon_invoer.get_result()
     return result
+

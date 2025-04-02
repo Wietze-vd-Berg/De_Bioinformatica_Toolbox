@@ -48,9 +48,23 @@ def salmon_invoer():
         if not fasta_file or not fastq_file1 or not fastq_file2:
             return 'error-bericht', 400
 
-        kwargs["fasta_file"] = fasta_file  # toevoegen aan de kwargs
-        kwargs["fastq_file1"] = fastq_file1
-        kwargs["fastq_file2"] = fastq_file2
+        # 1. Tijdelijke map aanmaken
+        temp_dir = os.path.join("tmp_uploads", str(uuid.uuid4()))
+        os.makedirs(temp_dir, exist_ok=True)
+
+        # 2. Bestanden opslaan
+        fasta_path = os.path.join(temp_dir, fasta_file.filename)
+        fastq1_path = os.path.join(temp_dir, fastq_file1.filename)
+        fastq2_path = os.path.join(temp_dir, fastq_file2.filename)
+
+        fasta_file.save(fasta_path)
+        fastq_file1.save(fastq1_path)
+        fastq_file2.save(fastq2_path)
+
+        # 3. Alleen paden meegeven
+        kwargs["fasta_file_path"] = fasta_path
+        kwargs["fastq_file1_path"] = fastq1_path
+        kwargs["fastq_file2_path"] = fastq2_path
 
         if seqBias: kwargs['seqBias'] = True
         else: kwargs['seqBias'] = False
@@ -76,7 +90,18 @@ def verwerken(task_id):
 
 @app.route("/status/<task_id>")
 def status(task_id):
-    return jsonify({"status": tasks.get(task_id, "onbekend")})
+    status = tasks.get(task_id, "onbekend")
+    result = results.get(task_id)
+
+    response = {"status": status}
+
+    if result:
+        response["success"] = result.get("success")
+        response["error"] = result.get("error")
+        response["status_code"] = result.get("status_code", 200 if result.get("success") else 500)
+
+    return jsonify(response), response.get("status_code", 200)
+
 
 @app.route("/resultaat/<task_id>")
 def resultaat(task_id):
@@ -183,8 +208,11 @@ def generate_bar_chart(data_fastq1):
 
 def start_salmon_verwerking(kwargs, fasta_filename, task_id):
     try:
+        print(f"[{task_id}] Start Salmon verwerking...")
         quantresult = salmon_handler(kwargs)
+
         if quantresult['success']:
+            print(f"[{task_id}] Verwerking geslaagd.")
             results[task_id] = {
                 "success": True,
                 "result": quantresult['result'],
@@ -193,12 +221,34 @@ def start_salmon_verwerking(kwargs, fasta_filename, task_id):
             }
             tasks[task_id] = "done"
         else:
-            results[task_id] = quantresult
+            print(f"[{task_id}] Fout tijdens verwerking: {quantresult.get('error')}")
+            results[task_id] = {
+                "success": False,
+                "error": quantresult.get("error", "Onbekende fout"),
+                "status_code": 500
+            }
             tasks[task_id] = "error"
+
     except Exception as e:
-        results[task_id] = {"success": False, "error": str(e)}
+        import traceback
+        error_trace = traceback.format_exc()
+        print(f"[{task_id}] Onverwachte fout:\n{error_trace}")
+        results[task_id] = {
+            "success": False,
+            "error": f"Onverwachte fout tijdens verwerking: {str(e)}",
+            "trace": error_trace,
+            "status_code": 500
+        }
         tasks[task_id] = "error"
 
+    finally:
+        try:
+            os.remove(kwargs['fasta_file_path'])
+            os.remove(kwargs['fastq_file1_path'])
+            os.remove(kwargs['fastq_file2_path'])
+            os.rmdir(os.path.dirname(kwargs['fasta_file_path']))  # verwijder tijdelijke map
+        except Exception as e:
+            print(f"Fout bij opruimen: {e}")
 
 
 if __name__ == '__main__':

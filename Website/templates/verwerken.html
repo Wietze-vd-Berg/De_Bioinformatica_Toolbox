@@ -1,5 +1,5 @@
 <h2>Je bestand wordt verwerkt...</h2>
-<p>Even geduld aub. De verwerking duurt een paar minuten.</p>
+<p id="status-message">Even geduld aub. De verwerking kan enkele minuten duren.</p>
 
 <script>
   const taskId = "{{ task_id }}";
@@ -11,10 +11,14 @@
         if (data.status === "done") {
           window.location.href = "/resultaat/" + taskId;
         } else if (data.status === "error") {
-          document.body.innerHTML = "<h2>Er ging iets mis tijdens de verwerking.</h2>";
+          const message = data.error || "Er ging iets mis tijdens de verwerking.";
+          document.getElementById("status-message").innerHTML = "<strong style='color:red;'>" + message + "</strong>";
         } else {
           setTimeout(checkStatus, 3000);
         }
+      })
+      .catch(error => {
+        document.getElementById("status-message").innerHTML = "<strong style='color:red;'>Verbindingsfout: " + error + "</strong>";
       });
   }
 

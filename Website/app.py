@@ -217,7 +217,7 @@ def start_salmon_verwerking(kwargs, fasta_filename, task_id):
                 "success": True,
                 "result": quantresult['result'],
                 "kwargs": kwargs,
-                "fasta_filename": fasta_filename
+                "fasta_filename": os.path.basename(kwargs['fasta_file_path'])
             }
             tasks[task_id] = "done"
         else:

@@ -1,4 +1,6 @@
 import os
+import matplotlib
+matplotlib.use('Agg') # Voorkomt crashes met threads en plots
 import matplotlib.pyplot as plt
 import numpy as np
 import io
@@ -158,12 +160,12 @@ def generate_bar_chart(data_fastq1):
 
     img_io = io.BytesIO()
     plt.savefig(img_io, format='png', bbox_inches='tight')
+    plt.close()
     img_io.seek(0)
     bar_chart_data = base64.b64encode(img_io.getvalue()).decode('utf-8')
-    plt.close()
 
     return bar_chart_data
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

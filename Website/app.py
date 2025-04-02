@@ -47,9 +47,9 @@ def salmon_invoer():
         if fastq_file2:
             kwargs["fastq_file2"] = fastq_file2
 
-        kwargs['seqBias'] = True if request.files.get('seqBias') else kwargs['seqBias'] = False
-        kwargs['gcBias'] = True if request.files.get('gcBias') else kwargs['gcBias'] = False
-        kwargs['posBias'] = True if request.files.get('posBias') else kwargs['posBias'] = False
+        kwargs['seqBias'] = bool(request.files.get('seqBias'))
+        kwargs['gcBias'] = bool(request.files.get('gcBias'))
+        kwargs['posBias'] = bool(request.files.get('posBias'))
 
         # Voer de Salmon-analyse uit met de gegeven parameters
         quantresult = salmon_handler(kwargs)

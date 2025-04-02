@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="max-w-screen-lg mx-auto px-4 py-8 text-center">
+        <h1 class="text-3xl font-bold mb-6">Bezig met analyseren...</h1>
+        <p class="text-lg mb-4">Je bestanden worden verwerkt. Dit kan enkele seconden duren.</p>
+
+        <!-- dit zorgt voor zo'n laadanimatie -->
+        <div class="flex justify-center my-6">
+            <div class="w-12 h-12 border-4 border-orange-400 border-dashed rounded-full animate-spin"></div>
+        </div>
+
+        <p class="text-gray-500 italic">Je wordt automatisch doorgestuurd naar de resultaten...</p>
+
+        <!-- redirect na 5 seconden - info komt van hier:
+         https://stackoverflow.com/questions/3292038/redirect-website-after-specified-amount-of-time -->
+        <meta http-equiv="refresh" content="5;url={{ url_for('resultaat') }}">
+    </div>
+{% endblock %}

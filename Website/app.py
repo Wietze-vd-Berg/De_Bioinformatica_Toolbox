@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 import base64
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for, session
 from static.py.salmon import salmon_handler
 
 app = Flask(__name__)
@@ -16,6 +16,12 @@ def index():
     """
     return render_template('index.html', title='Home', active_page='index')
 
+@app.route('/laden')
+def laden():
+    """
+    Rendert een laadpagina tussen de invoer en het resultaat
+    """
+    return render_template('laden.html', title="Salmon is bezig.....")
 
 @app.route('/salmon_invoer', methods=['GET', 'POST'])
 def salmon_invoer():
@@ -63,10 +69,17 @@ def salmon_invoer():
         data_fastq1 = quantresult['result']
 
         # Genereer de staafgrafiek
-        bar_chart_data = generate_bar_chart(data_fastq1)
+        session['bar_chart_data'] = generate_bar_chart(quantresult['result'])
 
-        return render_template('resultaat.html', title='Resultaat', active_page='resultaat',
-                               bar_chart_data=bar_chart_data)
+        return redirect(url_for('loading'))
+
+@app.route('/resultaat')
+def resultaat():
+    """
+    Laadt de resultatenpagina met resultaten van salmon.
+    """
+    bar_chart_data = session.get('bar_chart_data', None)
+    return render_template('resultaat.html', title='Resultaat', active_page='resultaat', bar_chart_data=bar_chart_data)
 
 
 @app.route('/uitleg')
@@ -91,9 +104,6 @@ def contact():
     Rendert de contactpagina.
     """
     return render_template('contact.html', title='Contact', active_page='contact')
-
-
-
 
 
 def generate_bar_chart(data_fastq1):

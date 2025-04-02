@@ -1,8 +1,8 @@
 import unittest
-from salmon.py import salmon_handler
+from Website.static.py.salmon import salmon_handler
 
 class TestSalmon(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         self.test_fasta_path = "tests/testfasta.fasta" # Gebruik een bestaand FASTA-bestand voor de test
 
     def test_salmon_py(self): # Dit test dus of een bestaand FASTA-bestand wel wordt verwerkt door Salmon

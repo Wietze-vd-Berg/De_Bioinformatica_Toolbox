@@ -45,7 +45,7 @@ class SalmonInvoer:
             return {'success': False, 'error': e}
         # geeft een error als er geen output in staat
 
-    def run_quant(self):
+    def run_quant(self, opties):
         """
         Voert de Salmon-kwantisatie uit op het geüploade bestand.
 
@@ -60,6 +60,10 @@ class SalmonInvoer:
             '-2', self.r2,
             '-o', self.output_dir,
         ]
+
+        if opties['gcBias']: console_cmd.append('--gcBias')
+        if opties['seqBias']: console_cmd.append('-seqBias')
+        if opties['posBias']: console_cmd.append('-posBias')
 
         try:
             output = subprocess.run(console_cmd)
@@ -121,7 +125,7 @@ def salmon_handler(opties):
         return indexresult
 
     print(f'salmon run_quant met indexed {fasta_file.filename}, r1&r2 als {fastq_file1.filename}, {fastq_file2.filename}')
-    quantresult = salmon_invoer.run_quant()
+    quantresult = salmon_invoer.run_quant(opties)
     if not quantresult['success']:
         # Retourneer de error als kwantisatie niet werkt, omdat de value ('success') dan false is
         return quantresult

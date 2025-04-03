@@ -142,9 +142,9 @@ def serve_json(filename):
     """
     return send_from_directory('voorbeeld_data', filename)
 
-@app.route('resultaat/download/<fasta_filename>')
+@app.route('/resultaat/download/<fasta_filename>')
 def download_quant_file(fasta_filename):
-    folder = os.path.join(app.root_path, 'Website', 'salmon_file_manager', 'output', fasta_filename)
+    folder = os.path.join(app.root_path, 'salmon_file_manager', 'output', fasta_filename)
 
     file_path = os.path.join(folder, 'quant.sf')
     print("Zoekpad:", file_path)

@@ -4,7 +4,7 @@ import uuid, threading
 from flask import Flask, render_template, request, send_from_directory, redirect, url_for, session, jsonify
 
 from modules import barchart
-from static.py.salmon import salmon_handler
+from modules.utils import start_salmon_verwerking, update_step
 
 # threading variabels
 tasks = {}
@@ -77,7 +77,10 @@ def salmon_invoer():
         task_id = str(uuid.uuid4())
         tasks[task_id] = {"step": "queued", "status": "queued"}
 
-        threading.Thread(target=start_salmon_verwerking, args=(kwargs, task_id)).start()
+        threading.Thread(
+            target=start_salmon_verwerking,
+            args=(kwargs, task_id, tasks, results)
+        ).start()
 
         return redirect(url_for("verwerken", task_id=task_id))
 
@@ -169,53 +172,6 @@ def test_salmon():
         return f"<pre>{output}</pre>"
     except FileNotFoundError:
         return "Salmon niet gevonden."
-
-def start_salmon_verwerking(kwargs, task_id):
-    try:
-        tasks[task_id] = {"step": "index", "status": "processing"}
-        quantresult = {}
-
-        print(f"[{task_id}] Start Salmon index")
-        result = salmon_handler(kwargs, status_callback=lambda step, status: update_step(task_id, step, status))
-
-        if result['success']:
-            tasks[task_id] = {"step": "done", "status": "done"}
-            results[task_id] = {
-                "success": True,
-                "result": result['result'],
-                "kwargs": kwargs,
-                "fasta_filename": os.path.basename(kwargs['fasta_file_path'])
-            }
-        else:
-            tasks[task_id] = {"step": "error", "status": "error"}
-            results[task_id] = {
-                "success": False,
-                "error": result.get("error", "Onbekende fout"),
-                "status_code": 500
-            }
-
-    except Exception as e:
-        import traceback
-        error_trace = traceback.format_exc()
-        tasks[task_id] = {"step": "error", "status": "error"}
-        results[task_id] = {
-            "success": False,
-            "error": str(e),
-            "trace": error_trace,
-            "status_code": 500
-        }
-
-    finally:
-        try:
-            os.remove(kwargs['fasta_file_path'])
-            os.remove(kwargs['fastq_file1_path'])
-            os.remove(kwargs['fastq_file2_path'])
-            os.rmdir(os.path.dirname(kwargs['fasta_file_path']))  # verwijder tijdelijke map
-        except Exception as e:
-            print(f"Fout bij opruimen: {e}")
-
-def update_step(task_id, step, status):
-    tasks[task_id] = {"step": step, "status": status}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

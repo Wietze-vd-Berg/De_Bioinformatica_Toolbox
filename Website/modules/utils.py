@@ -1,6 +1,6 @@
 import os
 
-from Website.static.py.salmon import salmon_handler
+from Website.modules.salmon import salmon_handler
 
 def start_salmon_verwerking(kwargs, task_id, tasks, results):
     try:

@@ -1,5 +1,5 @@
 import unittest
-from Website.static.py.salmon import salmon_handler
+from Website.modules.salmon import salmon_handler
 
 class TestSalmon(unittest.TestCase):
     def setUp(self):

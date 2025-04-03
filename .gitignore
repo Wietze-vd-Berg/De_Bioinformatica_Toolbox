@@ -7,3 +7,5 @@ voorbeeld_data/
 Website/mnt/
 tmp_uploads/**
 Website/modules/__pycache__/**
+tmp_uploads/*
+tmp_uploads

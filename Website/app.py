@@ -75,7 +75,7 @@ def salmon_invoer():
         # Voer de Salmon-analyse uit met de gegeven parameters
 
         task_id = str(uuid.uuid4())
-        tasks[task_id] = "processing"
+        tasks[task_id] = {"step": "queued", "status": "queued"}
 
         threading.Thread(target=start_salmon_verwerking, args=(kwargs, task_id)).start()
 
@@ -170,7 +170,7 @@ def test_salmon():
     except FileNotFoundError:
         return "Salmon niet gevonden."
 
-def start_salmon_verwerking(kwargs, fasta_filename, task_id):
+def start_salmon_verwerking(kwargs, task_id):
     try:
         tasks[task_id] = {"step": "index", "status": "processing"}
         quantresult = {}

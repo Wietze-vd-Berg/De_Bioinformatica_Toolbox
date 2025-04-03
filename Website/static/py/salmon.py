@@ -82,23 +82,30 @@ class SalmonInvoer:
             return {'success': False, 'error': 'quant.sf niet gevonden'}
 
 
-def salmon_handler(opties):
-    fasta_file_path = opties['fasta_file_path']
-    fastq_file1_path = opties['fastq_file1_path']
-    fastq_file2_path = opties['fastq_file2_path']
+def salmon_handler(opties, status_callback=None):
+    def report(step, status="processing"):
+        if status_callback:
+            status_callback(step, status)
 
-    filename_only = os.path.basename(fasta_file_path)
+    salmon_invoer = SalmonInvoer()
 
-    salmon_invoer = SalmonInvoer(fasta_file_path, filename_only, fastq_file1_path, fastq_file2_path)
-
+    report("index", "processing")
+    # indexering
     indexresult = salmon_invoer.run_index()
     if not indexresult['success']:
+        report("index", "error")
         return indexresult
+    report("index", "done")
 
+    report("quant", "processing")
     quantresult = salmon_invoer.run_quant(opties)
     if not quantresult['success']:
+        report("quant", "error")
         return quantresult
+    report("quant", "done")
 
     result = salmon_invoer.get_result()
+
     return result
+
 

@@ -87,10 +87,13 @@ def verwerken(task_id):
 
 @app.route("/status/<task_id>")
 def status(task_id):
-    status = tasks.get(task_id, "onbekend")
+    task_info = tasks.get(task_id, {"step": "onbekend", "status": "queued"})
     result = results.get(task_id)
 
-    response = {"status": status}
+    response = {
+        "status": task_info["status"],
+        "step": task_info["step"]
+    }
 
     if result:
         response["success"] = result.get("success")
@@ -98,6 +101,7 @@ def status(task_id):
         response["status_code"] = result.get("status_code", 200 if result.get("success") else 500)
 
     return jsonify(response), response.get("status_code", 200)
+
 
 
 @app.route("/resultaat/<task_id>")
@@ -108,7 +112,9 @@ def resultaat(task_id):
     if not result['success']:
         return f"Fout tijdens verwerking: {result['error']}", 400
 
+    update_step(task_id, "chart", "processing")
     bar_chart_data = barchart.generate_bar_chart(result['result'])
+    update_step(task_id, "chart", "done")
 
     return render_template(
         'resultaat.html',
@@ -164,40 +170,40 @@ def test_salmon():
     except FileNotFoundError:
         return "Salmon niet gevonden."
 
-def start_salmon_verwerking(kwargs, task_id):
+def start_salmon_verwerking(kwargs, fasta_filename, task_id):
     try:
-        print(f"[{task_id}] Start Salmon verwerking...")
-        quantresult = salmon_handler(kwargs)
+        tasks[task_id] = {"step": "index", "status": "processing"}
+        quantresult = {}
 
-        if quantresult['success']:
-            print(f"[{task_id}] Verwerking geslaagd.")
+        print(f"[{task_id}] Start Salmon index")
+        result = salmon_handler(kwargs, status_callback=lambda step, status: update_step(task_id, step, status))
+
+        if result['success']:
+            tasks[task_id] = {"step": "done", "status": "done"}
             results[task_id] = {
                 "success": True,
-                "result": quantresult['result'],
+                "result": result['result'],
                 "kwargs": kwargs,
                 "fasta_filename": os.path.basename(kwargs['fasta_file_path'])
             }
-            tasks[task_id] = "done"
         else:
-            print(f"[{task_id}] Fout tijdens verwerking: {quantresult.get('error')}")
+            tasks[task_id] = {"step": "error", "status": "error"}
             results[task_id] = {
                 "success": False,
-                "error": quantresult.get("error", "Onbekende fout"),
+                "error": result.get("error", "Onbekende fout"),
                 "status_code": 500
             }
-            tasks[task_id] = "error"
 
     except Exception as e:
         import traceback
         error_trace = traceback.format_exc()
-        print(f"[{task_id}] Onverwachte fout:\n{error_trace}")
+        tasks[task_id] = {"step": "error", "status": "error"}
         results[task_id] = {
             "success": False,
-            "error": f"Onverwachte fout tijdens verwerking: {str(e)}",
+            "error": str(e),
             "trace": error_trace,
             "status_code": 500
         }
-        tasks[task_id] = "error"
 
     finally:
         try:
@@ -208,6 +214,8 @@ def start_salmon_verwerking(kwargs, task_id):
         except Exception as e:
             print(f"Fout bij opruimen: {e}")
 
+def update_step(task_id, step, status):
+    tasks[task_id] = {"step": step, "status": status}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)

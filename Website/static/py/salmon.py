@@ -86,18 +86,18 @@ def salmon_handler(opties, status_callback=None):
     def report(step, status="processing"):
         if status_callback:
             status_callback(step, status)
-	    
-	    fasta_file_path = opties["fasta_file_path"]
-	    fastq_file1_path = opties["fastq_file1_path"]
-	    fastq_file2_path = opties["fastq_file2_path"]
-	    fasta_filename = os.path.basename(fasta_file_path)
 
-            salmon_invoer = SalmonInvoer(
-		fasta_file_path,     # index_path
-		fasta_filename,      # naam van fasta bestand
-		fastq_file1_path,    # R1 path
-		fastq_file2_path     # R2 path
-	    )
+    fasta_file_path = opties["fasta_file_path"]
+    fastq_file1_path = opties["fastq_file1_path"]
+    fastq_file2_path = opties["fastq_file2_path"]
+    fasta_filename = os.path.basename(fasta_file_path)
+
+    salmon_invoer = SalmonInvoer(
+                    fasta_file_path,     # index_path
+                    fasta_filename,      # naam van fasta bestand
+                    fastq_file1_path,    # R1 path
+                    fastq_file2_path     # R2 path
+        )
 
 
     report("index", "processing")

@@ -5,5 +5,5 @@ Website/salmon_file_manager
 voorbeeld_data/
 .venv/
 Website/mnt/
-Website/tmp_uploads/**
+tmp_uploads/**
 Website/modules/__pycache__/**

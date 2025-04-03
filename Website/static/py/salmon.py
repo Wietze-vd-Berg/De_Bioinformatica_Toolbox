@@ -27,7 +27,7 @@ class SalmonInvoer:
             '-i', self.index_dir
         ]
         try:
-            subprocess.run(console_cmd)
+            subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             return {'success': True}
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': e}
@@ -53,7 +53,7 @@ class SalmonInvoer:
         if opties['posBias']: console_cmd.append('--posBias')
 
         try:
-            output = subprocess.run(console_cmd)
+            output = subprocess.run(console_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': str(e)}
 

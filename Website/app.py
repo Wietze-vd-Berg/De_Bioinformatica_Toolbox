@@ -1,10 +1,36 @@
 import os
+import cProfile
+import pstats
 import matplotlib.pyplot as plt
 import numpy as np
 import io
 import base64
 from flask import Flask, render_template, request, send_from_directory, redirect, url_for, session
 from static.py.salmon import salmon_handler
+
+# Profiler decorator
+def profiler(func):
+    def inner(*args, **kwargs):
+        print(f"Profiler gestart voor {func.__name__}")
+        profiler = cProfile.Profile()
+        profiler.enable()
+        result = func(*args, **kwargs)
+        profiler.disable()
+        stats = pstats.Stats(profiler).strip_dirs().sort_stats('cumtime')
+        stats.print_stats()
+
+        directory = "/Users/marit/Desktop/profielen"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        profile_path = os.path.join(directory, f"{func.__name__}.profile")
+        print(f"Probeert profielbestand op te slaan in: {profile_path}")
+        try:
+            stats.dump_stats(profile_path)
+            print(f"Profielbestand opgeslagen op: {profile_path}")
+        except Exception as e:
+            print(f"Fout bij opslaan: {e}")
+        return result
+    return inner
 
 app = Flask(__name__)
 
@@ -18,6 +44,7 @@ def index():
 
 
 @app.route('/salmon_invoer', methods=['GET', 'POST'])
+@profiler
 def salmon_invoer():
     """
     Behandelt de Salmon invoerpagina en verwerkt formulierinzendingen.
@@ -167,3 +194,24 @@ def generate_bar_chart(data_fastq1):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+if __name__ == '__main__':
+    # Testcode om een POST-request te simuleren
+    with app.test_client() as client:
+        # Dummy-bestanden als bytes
+        fasta_data = b">seq1\nATCG"
+        fastq1_data = b"@read1\nATCG\n+\nIIII"
+        fastq2_data = b"@read2\nATCG\n+\nIIII"
+
+        # Simuleer een POST-request met bestanden en form-data
+        response = client.post('/salmon_invoer', data={
+            'fasta-file': (io.BytesIO(fasta_data), 'test.fasta'),
+            'fastq-file1': (io.BytesIO(fastq1_data), 'test1.fastq'),
+            'fastq-file2': (io.BytesIO(fastq2_data), 'test2.fastq'),
+            'seqBias': 'on',  # Simuleer checkbox
+            'posBias': '',    # Leeg betekent uit
+            'gcBias': ''      # Leeg betekent uit
+        }, content_type='multipart/form-data')
+
+        print(f"Response status: {response.status_code}")
+        print(f"Response data: {response.data.decode('utf-8')}")

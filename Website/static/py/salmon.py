@@ -1,10 +1,8 @@
 import os
 import subprocess
 
-
 class SalmonInvoer:
 #Classes die verantwoordelijk is voor het uitvoeren van Salmon-indexering en kwantisatie
-
     def __init__(self, index_path, input_file, r1, r2):
         """
         Initialiseert de klassenvariabelen voor indexeren en kwantiseren.
@@ -26,7 +24,7 @@ class SalmonInvoer:
 
         if not os.path.exists(self.index_dir):
             os.makedirs(self.index_dir)
-
+    
     def run_index(self):
         """
         Voert de Salmon-indexering uit op het opgegeven bestand.
@@ -44,7 +42,8 @@ class SalmonInvoer:
         except subprocess.CalledProcessError as e:
             return {'success': False, 'error': e}
         # geeft een error als er geen output in staat
-
+    
+    
     def run_quant(self, opties):
         """
         Voert de Salmon-kwantisatie uit op het geüploade bestand.
@@ -70,7 +69,8 @@ class SalmonInvoer:
             return {'success': False, 'error': str(e)}
 
         return {'success': True, 'output': output}
-
+    
+    
     def get_result(self):
         result_file = os.path.join(self.output_dir, 'quant.sf')
         if os.path.exists(result_file):

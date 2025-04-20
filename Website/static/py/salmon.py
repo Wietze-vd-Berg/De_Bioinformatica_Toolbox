@@ -27,6 +27,8 @@ class SalmonInvoer:
         if not os.path.exists(self.index_dir):
             os.makedirs(self.index_dir)
 
+        self.result_cache = None
+
     def run_index(self):
         """
         Voert de Salmon-indexering uit op het opgegeven bestand.
@@ -72,6 +74,15 @@ class SalmonInvoer:
         return {'success': True, 'output': output}
 
     def get_result(self):
+        """
+        Leest het resultaat en zet het om naar een lijst van dictionaries,
+        waarbij elke dictionary de quants bevat voor een specifiek transcript.
+
+        :return: Dictionary die het resultaat verkrijgt en weergeeft, en als er een fout optreedt een foutmelding geeft
+        """
+        if self.result_cache:
+            return self.result_cache
+
         result_file = os.path.join(self.output_dir, 'quant.sf')
         if os.path.exists(result_file):
             try:
@@ -87,7 +98,9 @@ class SalmonInvoer:
                     entry['TPM'] = float(entry['TPM'])  # Zorg dat TPM numeriek is
                     result_list.append(entry)
 
-                return {'success': True, 'result': result_list}
+                self.result_cache = {'success': True, 'result': result_list}
+                return self.result_cache
+
             except Exception as e:
                 return {'success': False, 'error': f'Fout bij inlezen quant.sf: {e}'}
         else:
